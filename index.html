@@ -3,96 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flag Master Ultra</title>
+    <title>Flag Master Ultra V2</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #0f172a; color: white; overflow: hidden; }
-        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.1); }
-        .card-inner { transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .btn-opt { background: rgba(255, 255, 255, 0.05); transition: all 0.2s; border: 1px solid rgba(255, 255, 255, 0.1); }
-        .btn-opt:hover { background: rgba(255, 255, 255, 0.15); transform: translateY(-2px); border-color: #6366f1; }
-        .correct { background: #10b981 !important; border-color: #10b981 !important; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #0f172a; color: white; }
+        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .btn-opt { background: rgba(255, 255, 255, 0.05); transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .btn-opt:hover:not(:disabled) { background: rgba(255, 255, 255, 0.12); transform: scale(1.02); border-color: #6366f1; }
+        .correct { background: #10b981 !important; border-color: #10b981 !important; box-shadow: 0 0 20px rgba(16, 185, 129, 0.2); }
         .wrong { background: #ef4444 !important; border-color: #ef4444 !important; }
     </style>
 </head>
 <body class="min-h-screen flex items-center justify-center p-4">
 
-    <div class="absolute top-0 left-0 w-full h-full overflow-hidden -z-10">
-        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-600/20 blur-[120px] rounded-full"></div>
-        <div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-purple-600/20 blur-[120px] rounded-full"></div>
-    </div>
-
     <div class="max-w-md w-full glass rounded-[2.5rem] overflow-hidden shadow-2xl relative">
         <div class="p-6 flex justify-between items-center border-b border-white/10">
             <div>
-                <h1 class="text-xl font-800 tracking-tighter text-indigo-400">FLAG MASTER <span class="text-white">ULTRA</span></h1>
-                <p class="text-[10px] text-slate-400 font-bold tracking-widest uppercase">Global Edition</p>
+                <h1 class="text-xl font-800 tracking-tighter text-indigo-400">FLAG MASTER <span class="text-white">V2</span></h1>
+                <p id="remaining-count" class="text-[9px] text-slate-400 font-bold uppercase tracking-widest mt-1">Sisa: - / -</p>
             </div>
             <div class="bg-indigo-500/10 px-4 py-2 rounded-2xl border border-indigo-500/20 text-center">
-                <span class="block text-[8px] text-indigo-300 font-bold uppercase">Skor Kamu</span>
+                <span class="block text-[8px] text-indigo-300 font-bold uppercase">Skor</span>
                 <span id="score" class="text-xl font-800 text-indigo-400">0</span>
             </div>
         </div>
 
         <div class="p-6">
-            <div class="relative mb-8 aspect-[4/3] rounded-3xl overflow-hidden bg-black/20 border border-white/5 flex items-center justify-center">
-                <img id="flag-img" src="" class="max-w-[80%] max-h-[70%] shadow-2xl transition-all duration-500 opacity-0 scale-90">
+            <div class="relative mb-6 aspect-[4/3] rounded-3xl overflow-hidden bg-black/20 border border-white/5 flex items-center justify-center">
+                <img id="flag-img" src="" class="max-w-[85%] max-h-[70%] shadow-2xl transition-all duration-500 opacity-0 scale-90">
                 
-                <div id="hint-box" class="absolute inset-0 bg-slate-900/95 flex flex-col items-center justify-center opacity-0 pointer-events-none transition-all duration-300 z-20 p-4">
-                    <p class="text-slate-400 text-[10px] font-bold uppercase mb-2">Jawaban Benar:</p>
-                    <p id="hint-text" class="text-xl font-bold text-center text-white mb-4"></p>
-                    <button onclick="hideHint()" class="px-6 py-2 bg-indigo-600 rounded-full text-[10px] font-800">TUTUP</button>
+                <div id="hint-box" class="absolute inset-0 bg-slate-900/95 flex flex-col items-center justify-center opacity-0 pointer-events-none transition-all duration-300 z-20">
+                    <p class="text-slate-400 text-[10px] font-bold uppercase mb-2 italic">Petunjuk Jawaban:</p>
+                    <p id="hint-text" class="text-xl font-bold text-center text-white px-4"></p>
+                    <button onclick="hideHint()" class="mt-4 px-6 py-2 bg-indigo-600 rounded-full text-[10px] font-800">OK, MENGERTI</button>
                 </div>
             </div>
 
-            <div id="options-grid" class="grid grid-cols-1 gap-3">
-                </div>
+            <div id="options-grid" class="grid grid-cols-1 gap-3"></div>
 
             <div class="mt-8 flex gap-3">
-                <button onclick="showHint()" class="flex-[0.5] py-4 rounded-2xl bg-white/5 text-[10px] font-bold hover:bg-white/10 transition-all border border-white/10">
-                    💡 LIHAT JAWABAN
-                </button>
-                <button onclick="newRound()" class="flex-1 py-4 rounded-2xl bg-indigo-600 text-[10px] font-bold shadow-lg shadow-indigo-500/20 hover:bg-indigo-500 transition-all uppercase tracking-widest">
-                    Lewati Bendera →
-                </button>
+                <button onclick="showHint()" class="flex-1 py-4 rounded-2xl bg-white/5 text-[10px] font-bold hover:bg-white/10 transition-all">💡 LIHAT JAWABAN</button>
+                <button onclick="newRound()" class="flex-1 py-4 rounded-2xl bg-indigo-600 text-[10px] font-bold uppercase tracking-widest hover:bg-indigo-500">Lewati →</button>
             </div>
         </div>
     </div>
 
     <script>
-        // Database internal untuk menjamin 100% tanpa bug "Memuat..."
-        const db = [
-            {n:"Indonesia", c:"id"}, {n:"Palestina", c:"ps"}, {n:"Jepang", c:"jp"}, {n:"Arab Saudi", c:"sa"},
-            {n:"Korea Selatan", c:"kr"}, {n:"Amerika Serikat", c:"us"}, {n:"Prancis", c:"fr"}, {n:"Jerman", c:"de"},
-            {n:"Turki", c:"tr"}, {n:"Malaysia", c:"my"}, {n:"Brasil", c:"br"}, {n:"Argentina", c:"ar"},
-            {n:"Inggris", c:"gb"}, {n:"Italia", c:"it"}, {n:"Australia", c:"au"}, {n:"Kanada", c:"ca"},
-            {n:"Belanda", c:"nl"}, {n:"Rusia", c:"ru"}, {n:"Tiongkok", c:"cn"}, {n:"India", c:"in"},
-            {n:"Thailand", c:"th"}, {n:"Vietnam", c:"vn"}, {n:"Singapura", c:"sg"}, {n:"Meksiko", c:"mx"},
-            {n:"Mesir", c:"eg"}, {n:"Spanyol", c:"es"}, {n:"Portugal", c:"pt"}, {n:"Swiss", c:"ch"}
-        ];
-
+        let allCountries = [];
+        let availableCountries = [];
         let score = 0;
         let current;
 
+        // Ambil SEMUA bendera dari API resmi
+        async function loadData() {
+            try {
+                const res = await fetch('https://flagcdn.com/id/codes.json');
+                const data = await res.json();
+                // Filter wilayah yang benderanya valid
+                allCountries = Object.entries(data).map(([code, name]) => ({ code, name }));
+                availableCountries = [...allCountries];
+                newRound();
+            } catch (e) {
+                alert("Gagal memuat data. Periksa koneksi internet.");
+            }
+        }
+
         function newRound() {
+            if (availableCountries.length === 0) {
+                alert("Luar biasa! Semua bendera sudah kamu tebak. Permainan akan direset.");
+                availableCountries = [...allCountries];
+                score = 0;
+                document.getElementById('score').textContent = score;
+            }
+
             hideHint();
-            current = db[Math.floor(Math.random() * db.length)];
+            // Ambil acak & hapus dari daftar (Anti-Duplikat)
+            const index = Math.floor(Math.random() * availableCountries.length);
+            current = availableCountries.splice(index, 1)[0];
+
+            document.getElementById('remaining-count').textContent = `Sisa: ${availableCountries.length} / ${allCountries.length}`;
             
             const img = document.getElementById('flag-img');
             img.style.opacity = '0';
-            img.style.transform = 'scale(0.9)';
-            img.src = `https://flagcdn.com/w640/${current.c}.png`;
-            img.onload = () => {
-                img.style.opacity = '1';
-                img.style.transform = 'scale(1)';
-            };
+            img.src = `https://flagcdn.com/w640/${current.code}.png`;
+            img.onload = () => img.style.opacity = '1';
 
-            // Setup Jawaban
-            let choices = [current.n];
-            while(choices.length < 4) {
-                let r = db[Math.floor(Math.random() * db.length)].n;
-                if(!choices.includes(r)) choices.push(r);
+            // Pilihan jawaban acak
+            let choices = [current.name];
+            while (choices.length < 4) {
+                let random = allCountries[Math.floor(Math.random() * allCountries.length)].name;
+                if (!choices.includes(random)) choices.push(random);
             }
             choices.sort(() => Math.random() - 0.5);
 
@@ -101,7 +102,7 @@
             choices.forEach(opt => {
                 const b = document.createElement('button');
                 b.className = 'btn-opt w-full p-4 rounded-2xl text-xs font-bold text-left flex justify-between items-center';
-                b.innerHTML = `<span>${opt}</span><div class="w-1.5 h-1.5 rounded-full bg-white/20"></div>`;
+                b.innerHTML = `<span>${opt}</span><div class="w-1.5 h-1.5 rounded-full bg-white/10"></div>`;
                 b.onclick = () => check(opt, b);
                 grid.appendChild(b);
             });
@@ -111,22 +112,22 @@
             const btns = document.querySelectorAll('.btn-opt');
             btns.forEach(b => b.disabled = true);
 
-            if(sel === current.n) {
+            if (sel === current.name) {
                 score += 10;
                 document.getElementById('score').textContent = score;
                 btn.classList.add('correct');
-                setTimeout(newRound, 1000);
+                setTimeout(newRound, 800);
             } else {
                 btn.classList.add('wrong');
                 btns.forEach(b => {
-                    if(b.innerText.trim() === current.n) b.classList.add('correct');
+                    if (b.innerText.trim() === current.name) b.classList.add('correct');
                 });
                 setTimeout(newRound, 2000);
             }
         }
 
         function showHint() {
-            document.getElementById('hint-text').textContent = current.n;
+            document.getElementById('hint-text').textContent = current.name;
             const h = document.getElementById('hint-box');
             h.style.opacity = '1';
             h.style.pointerEvents = 'auto';
@@ -138,7 +139,7 @@
             h.style.pointerEvents = 'none';
         }
 
-        newRound();
+        loadData();
     </script>
 </body>
 </html>
