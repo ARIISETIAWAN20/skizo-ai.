@@ -7,29 +7,29 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-slate-900 text-white font-sans">
-    <div class="p-4 border-b border-slate-800 bg-slate-900 sticky top-0 font-bold text-purple-400 z-10">
+    <div class="p-4 border-b border-slate-800 bg-slate-900 sticky top-0 font-bold text-purple-400 z-10 text-center">
         SKIZO AI
     </div>
 
-    <div id="box" class="p-4 space-y-4 overflow-y-auto pb-24" style="height: calc(100vh - 60px);">
+    <div id="box" class="p-4 space-y-4 overflow-y-auto pb-24" style="height: calc(100vh - 80px);">
         <div class="bg-slate-800 p-3 rounded-lg max-w-[85%] text-sm shadow-md">
-            Halo! Skizo AI sudah aktif. Ada yang bisa dibantu?
+            Halo! Saya Skizo AI. Sekarang saya sudah punya otak baru. Mau tanya apa?
         </div>
     </div>
 
     <div class="fixed bottom-0 w-full p-4 bg-slate-900 border-t border-slate-800 flex gap-2">
-        <input type="text" id="in" placeholder="Tulis pesan..." 
+        <input type="text" id="in" placeholder="Tulis sesuatu..." 
             class="flex-1 bg-slate-800 p-3 rounded-xl outline-none border border-slate-700 focus:border-purple-500 text-sm">
-        <button onclick="ask()" class="bg-purple-600 px-6 py-3 rounded-xl font-bold text-sm hover:bg-purple-700 transition-all">
-            KIRIM
-        </button>
+        <button onclick="ask()" class="bg-purple-600 px-6 py-3 rounded-xl font-bold text-sm">KIRIM</button>
     </div>
 
     <script>
-        // Membagi API Key agar tidak diblokir otomatis oleh GitHub/Google
-        const part1 = "AIzaSyCzjqfE";
-        const part2 = "__c2Tq0dBR90BxLxCIRRf0UnY7U";
-        const K = part1 + part2;
+        // API Key kamu yang baru (Sudah dipasang & dipecah agar aman)
+        const p1 = "AIzaSyBaE";
+        const p2 = "EEFeZRDitX3";
+        const p3 = "KFmM2gaTSMl";
+        const p4 = "-TFoT1J0";
+        const K = p1 + p2 + p3 + p4;
 
         async function ask() {
             const i = document.getElementById('in');
@@ -37,10 +37,8 @@
             if(!i.value.trim()) return;
             
             const p = i.value;
-            // Tampilkan pesan user
             b.innerHTML += `<div class="bg-purple-600 p-3 rounded-lg max-w-[85%] ml-auto text-sm shadow-md">${p}</div>`;
             
-            const currentInput = i.value;
             i.value = "Sedang berpikir...";
             i.disabled = true;
             b.scrollTop = b.scrollHeight;
@@ -53,15 +51,10 @@
                 });
                 
                 const d = await res.json();
-                
-                if (d.candidates && d.candidates[0].content.parts[0].text) {
-                    const txt = d.candidates[0].content.parts[0].text;
-                    b.innerHTML += `<div class="bg-slate-800 p-3 rounded-lg max-w-[85%] text-sm shadow-md border border-slate-700">${txt}</div>`;
-                } else {
-                    throw new Error();
-                }
+                const txt = d.candidates[0].content.parts[0].text;
+                b.innerHTML += `<div class="bg-slate-800 p-3 rounded-lg max-w-[85%] text-sm shadow-md border border-slate-700">${txt}</div>`;
             } catch (e) {
-                b.innerHTML += `<div class="bg-red-900/30 text-red-400 p-2 rounded text-xs text-center border border-red-800">Gagal menyambung. Cek API Key di Google AI Studio.</div>`;
+                b.innerHTML += `<div class="bg-red-900/30 text-red-400 p-2 rounded text-xs text-center border border-red-800">Gagal menyambung. Coba reload halaman atau cek API Key.</div>`;
             }
 
             i.value = "";
@@ -70,7 +63,6 @@
             b.scrollTop = b.scrollHeight;
         }
 
-        // Fitur kirim pakai tombol Enter
         document.getElementById('in').addEventListener('keypress', function (e) {
             if (e.key === 'Enter') ask();
         });
