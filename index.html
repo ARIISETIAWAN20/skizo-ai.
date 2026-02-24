@@ -3,132 +3,147 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flag Master V3 - Standalone</title>
+    <title>GLOBAL FLAG - Elite Challenge</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #020617; color: white; margin: 0; }
-        .glass-container { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(25px); border: 1px solid rgba(255, 255, 255, 0.08); }
-        .btn-opt { background: rgba(255, 255, 255, 0.04); transition: all 0.3s ease; border: 1px solid rgba(255, 255, 255, 0.05); }
-        .btn-opt:hover:not(:disabled) { background: rgba(99, 102, 241, 0.15); border-color: #6366f1; transform: translateY(-2px); }
-        .correct { background: #10b981 !important; border-color: #10b981 !important; box-shadow: 0 0 30px rgba(16, 185, 129, 0.2); }
-        .wrong { background: #ef4444 !important; border-color: #ef4444 !important; }
-        .animate-fade { animation: fadeIn 0.4s ease-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+        :root { --accent: #8b5cf6; --cyan: #06b6d4; }
+        body { 
+            font-family: 'Space Grotesk', sans-serif; 
+            background: radial-gradient(circle at top right, #1e1b4b, #020617);
+            color: white; min-height: 100vh; margin: 0; overflow-x: hidden;
+        }
+        .main-card {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(40px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+        .flag-frame {
+            background: linear-gradient(145deg, rgba(255,255,255,0.05), rgba(255,255,255,0));
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: inset 0 2px 20px rgba(0,0,0,0.5);
+        }
+        .btn-choice {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            position: relative; overflow: hidden;
+        }
+        .btn-choice:hover:not(:disabled) {
+            background: rgba(139, 92, 246, 0.1);
+            border-color: var(--accent);
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.2);
+            transform: translateY(-3px);
+        }
+        .glow-text { text-shadow: 0 0 15px rgba(139, 92, 246, 0.5); }
+        .correct { background: #059669 !important; border-color: #10b981 !important; box-shadow: 0 0 30px rgba(16, 185, 129, 0.3); }
+        .wrong { background: #991b1b !important; border-color: #ef4444 !important; }
+        .progress-bar { height: 2px; background: var(--accent); transition: width 0.5s ease; box-shadow: 0 0 10px var(--accent); }
     </style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-4">
+<body class="flex items-center justify-center p-6">
 
-    <div class="max-w-md w-full glass-container rounded-[2.5rem] overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.5)] relative animate-fade">
-        <div class="p-6 flex justify-between items-center border-b border-white/5">
+    <div class="max-w-md w-full main-card rounded-[3rem] p-8 relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-full bg-white/5">
+            <div id="pb" class="progress-bar" style="width: 0%"></div>
+        </div>
+
+        <div class="flex justify-between items-start mb-10">
             <div>
-                <h1 class="text-xl font-800 tracking-tighter bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent italic">FLAGMASTER V3</h1>
-                <p id="counter" class="text-[9px] text-slate-500 font-bold uppercase tracking-widest mt-1">Sisa: - / -</p>
+                <h1 class="text-3xl font-bold tracking-tighter italic glow-text">GLOBAL<span class="text-indigo-500">FLAG</span></h1>
+                <p id="stats" class="text-[10px] text-slate-500 font-bold uppercase tracking-[0.3em] mt-1">MASTER EDITION</p>
             </div>
-            <div class="bg-indigo-500/10 px-5 py-2 rounded-2xl border border-indigo-500/20 text-center">
-                <span class="block text-[8px] text-indigo-300 font-bold uppercase tracking-tighter">Score</span>
-                <span id="score" class="text-xl font-800 text-indigo-400 leading-none">0</span>
+            <div class="flex flex-col items-end">
+                <span class="text-[9px] text-slate-400 font-bold uppercase">Points</span>
+                <span id="score" class="text-3xl font-bold text-indigo-400 leading-none">0</span>
             </div>
         </div>
 
-        <div class="p-6">
-            <div class="relative mb-6 aspect-[4/3] rounded-[2rem] overflow-hidden bg-black/40 border border-white/5 flex items-center justify-center shadow-inner">
-                <img id="flag-img" src="" class="max-w-[80%] max-h-[65%] shadow-2xl transition-all duration-500 opacity-0 scale-90">
+        <div class="relative mb-10">
+            <div class="flag-frame aspect-[16/10] rounded-[2.5rem] flex items-center justify-center overflow-hidden">
+                <img id="f-img" src="" class="max-w-[75%] max-h-[60%] shadow-2xl transition-all duration-700 opacity-0 scale-75">
                 
-                <div id="hint-box" class="absolute inset-0 bg-slate-950/95 flex flex-col items-center justify-center opacity-0 pointer-events-none transition-all duration-300 z-30 p-6 text-center">
-                    <p class="text-indigo-400 text-[10px] font-800 uppercase tracking-widest mb-2">Jawaban Benar:</p>
-                    <p id="hint-text" class="text-2xl font-800 text-white mb-6"></p>
-                    <button onclick="hideHint()" class="px-8 py-3 bg-indigo-600 rounded-full text-[10px] font-800 uppercase tracking-widest hover:bg-indigo-500 transition-all">Lanjut Bermain</button>
+                <div id="h-box" class="absolute inset-0 bg-slate-950/98 opacity-0 pointer-events-none transition-all duration-500 flex flex-col items-center justify-center z-50 rounded-[2.5rem]">
+                    <span class="text-indigo-500 text-[10px] font-bold tracking-widest uppercase mb-2">Identification:</span>
+                    <p id="h-txt" class="text-2xl font-bold text-white mb-6 px-6 text-center"></p>
+                    <button onclick="hideH()" class="px-8 py-3 bg-white/5 border border-white/10 rounded-full text-[10px] font-bold hover:bg-white/10 transition-all">RESUME</button>
                 </div>
             </div>
+        </div>
 
-            <div id="options-grid" class="grid grid-cols-1 gap-3 mb-2"></div>
+        <div id="opts" class="grid grid-cols-1 gap-4"></div>
 
-            <div class="mt-8 flex gap-3">
-                <button onclick="showHint()" class="flex-[0.4] py-4 rounded-2xl bg-white/5 text-[10px] font-bold hover:bg-white/10 transition-all uppercase tracking-widest border border-white/10">💡 Hint</button>
-                <button onclick="newRound()" class="flex-1 py-4 rounded-2xl bg-indigo-600 text-[10px] font-800 uppercase tracking-widest hover:bg-indigo-500 shadow-lg shadow-indigo-600/20 transition-all">Lewati Bendera →</button>
-            </div>
+        <div class="mt-10 flex gap-4">
+            <button onclick="showH()" class="flex-1 py-5 rounded-3xl bg-white/5 border border-white/10 text-[11px] font-bold hover:bg-white/10 transition-all uppercase tracking-widest text-slate-400">Hint</button>
+            <button onclick="next()" class="flex-[1.5] py-5 rounded-3xl bg-indigo-600 text-[11px] font-bold uppercase tracking-widest shadow-[0_10px_30px_rgba(79,70,229,0.3)] hover:bg-indigo-500 transition-all">Skip</button>
         </div>
     </div>
 
     <script>
-        // Database 250+ Negara Dunia (Standalone - Anti Error)
-        const countryDB = {"af":"Afghanistan","al":"Albania","dz":"Aljazair","ad":"Andorra","ao":"Angola","ag":"Antigua & Barbuda","ar":"Argentina","am":"Armenia","au":"Australia","at":"Austria","az":"Azerbaijan","bs":"Bahama","bh":"Bahrain","bd":"Bangladesh","bb":"Barbados","by":"Belarus","be":"Belgia","bz":"Belize","bj":"Benin","bt":"Bhutan","bo":"Bolivia","ba":"Bosnia","bw":"Botswana","br":"Brasil","bn":"Brunei Darussalam","bg":"Bulgaria","bf":"Burkina Faso","bi":"Burundi","kh":"Kamboja","cm":"Kamerun","ca":"Kanada","cv":"Tanjung Verde","cf":"Republik Afrika Tengah","td":"Chad","cl":"Chili","cn":"Tiongkok","co":"Kolombia","km":"Komoro","cg":"Kongo","cr":"Kosta Rika","ci":"Pantai Gading","hr":"Kroasia","cu":"Kuba","cy":"Siprus","cz":"Ceko","dk":"Denmark","dj":"Djibouti","dm":"Dominika","do":"Republik Dominika","ec":"Ekuador","eg":"Mesir","sv":"El Salvador","gq":"Guinea Khatulistiwa","er":"Eritrea","ee":"Estonia","et":"Etiopia","fj":"Fiji","fi":"Finlandia","fr":"Prancis","ga":"Gabon","gm":"Gambia","ge":"Georgia","de":"Jerman","gh":"Ghana","gr":"Yunani","gd":"Grenada","gt":"Guatemala","gn":"Guinea","gw":"Guinea-Bissau","gy":"Guyana","ht":"Haiti","hn":"Honduras","hu":"Hungaria","is":"Islandia","in":"India","id":"Indonesia","ir":"Iran","iq":"Irak","ie":"Irlandia","il":"Israel","it":"Italia","jm":"Jamaika","jp":"Jepang","jo":"Yordania","kz":"Kazakhstan","ke":"Kenya","ki":"Kiribati","kp":"Korea Utara","kr":"Korea Selatan","kw":"Kuwait","kg":"Kirgistan","la":"Laos","lv":"Latvia","lb":"Lebanon","ls":"Lesotho","lr":"Liberia","ly":"Libya","li":"Liechtenstein","lt":"Lituania","lu":"Luksemburg","mg":"Madagaskar","mw":"Malawi","my":"Malaysia","mv":"Maladewa","ml":"Mali","mt":"Malta","mh":"Kepulauan Marshall","mr":"Mauritania","mu":"Mauritius","mx":"Meksiko","fm":"Mikronesia","md":"Moldova","mc":"Monako","mn":"Mongolia","me":"Montenegro","ma":"Maroko","mz":"Mozambik","mm":"Myanmar","na":"Namibia","nr":"Nauru","np":"Nepal","nl":"Belanda","nz":"Selandia Baru","ni":"Nikaragua","ne":"Niger","ng":"Nigeria","no":"Norwegia","om":"Oman","pk":"Pakistan","pw":"Palau","ps":"Palestina","pa":"Panama","pg":"Papua Nugini","py":"Paraguay","pe":"Peru","ph":"Filipina","pl":"Polandia","pt":"Portugal","qa":"Qatar","ro":"Rumania","ru":"Rusia","rw":"Rwanda","kn":"Saint Kitts and Nevis","lc":"Saint Lucia","vc":"Saint Vincent","ws":"Samoa","sm":"San Marino","st":"Sao Tome & Principe","sa":"Arab Saudi","sn":"Senegal","rs":"Serbia","sc":"Seychelles","sl":"Sierra Leone","sg":"Singapura","sk":"Slovakia","si":"Slovenia","sb":"Kepulauan Solomon","so":"Somalia","za":"Afrika Selatan","ss":"Sudan Selatan","es":"Spanyol","lk":"Sri Lanka","sd":"Sudan","sr":"Suriname","sz":"Eswatini","se":"Swedia","ch":"Swiss","sy":"Suriah","tw":"Taiwan","tj":"Tajikistan","tz":"Tanzania","th":"Thailand","tl":"Timor Leste","tg":"Togo","to":"Tonga","tt":"Trinidad and Tobago","tn":"Tunisia","tr":"Turki","tm":"Turkmenistan","tv":"Tuvalu","ug":"Uganda","ua":"Ukraina","ae":"Uni Emirat Arab","gb":"Britania Raya","us":"Amerika Serikat","uy":"Uruguay","uz":"Uzbekistan","vu":"Vanuatu","va":"Vatikan","ve":"Venezuela","vn":"Vietnam","ye":"Yaman","zm":"Zambia","zw":"Zimbabwe"};
+        const db = {"af":"Afghanistan","al":"Albania","dz":"Aljazair","ad":"Andorra","ao":"Angola","ag":"Antigua & Barbuda","ar":"Argentina","am":"Armenia","au":"Australia","at":"Austria","az":"Azerbaijan","bs":"Bahama","bh":"Bahrain","bd":"Bangladesh","bb":"Barbados","by":"Belarus","be":"Belgia","bz":"Belize","bj":"Benin","bt":"Bhutan","bo":"Bolivia","ba":"Bosnia","bw":"Botswana","br":"Brasil","bn":"Brunei Darussalam","bg":"Bulgaria","bf":"Burkina Faso","bi":"Burundi","kh":"Kamboja","cm":"Kamerun","ca":"Kanada","cv":"Tanjung Verde","cf":"Republik Afrika Tengah","td":"Chad","cl":"Chili","cn":"Tiongkok","co":"Kolombia","km":"Komoro","cg":"Kongo","cr":"Kosta Rika","ci":"Pantai Gading","hr":"Kroasia","cu":"Kuba","cy":"Siprus","cz":"Ceko","dk":"Denmark","dj":"Djibouti","dm":"Dominika","do":"Republik Dominika","ec":"Ekuador","eg":"Mesir","sv":"El Salvador","gq":"Guinea Khatulistiwa","er":"Eritrea","ee":"Estonia","et":"Etiopia","fj":"Fiji","fi":"Finlandia","fr":"Prancis","ga":"Gabon","gm":"Gambia","ge":"Georgia","de":"Jerman","gh":"Ghana","gr":"Yunani","gd":"Grenada","gt":"Guatemala","gn":"Guinea","gw":"Guinea-Bissau","gy":"Guyana","ht":"Haiti","hn":"Honduras","hu":"Hungaria","is":"Islandia","in":"India","id":"Indonesia","ir":"Iran","iq":"Irak","ie":"Irlandia","il":"Israel","it":"Italia","jm":"Jamaika","jp":"Jepang","jo":"Yordania","kz":"Kazakhstan","ke":"Kenya","ki":"Kiribati","kp":"Korea Utara","kr":"Korea Selatan","kw":"Kuwait","kg":"Kirgistan","la":"Laos","lv":"Latvia","lb":"Lebanon","ls":"Lesotho","lr":"Liberia","ly":"Libya","li":"Liechtenstein","lt":"Lituania","lu":"Luksemburg","mg":"Madagaskar","mw":"Malawi","my":"Malaysia","mv":"Maladewa","ml":"Mali","mt":"Malta","mh":"Kepulauan Marshall","mr":"Mauritania","mu":"Mauritius","mx":"Meksiko","fm":"Mikronesia","md":"Moldova","mc":"Monako","mn":"Mongolia","me":"Montenegro","ma":"Maroko","mz":"Mozambik","mm":"Myanmar","na":"Namibia","nr":"Nauru","np":"Nepal","nl":"Belanda","nz":"Selandia Baru","ni":"Nikaragua","ne":"Niger","ng":"Nigeria","no":"Norwegia","om":"Oman","pk":"Pakistan","pw":"Palau","ps":"Palestina","pa":"Panama","pg":"Papua Nugini","py":"Paraguay","pe":"Peru","ph":"Filipina","pl":"Polandia","pt":"Portugal","qa":"Qatar","ro":"Rumania","ru":"Rusia","rw":"Rwanda","kn":"Saint Kitts and Nevis","lc":"Saint Lucia","vc":"Saint Vincent","ws":"Samoa","sm":"San Marino","st":"Sao Tome & Principe","sa":"Arab Saudi","sn":"Senegal","rs":"Serbia","sc":"Seychelles","sl":"Sierra Leone","sg":"Singapura","sk":"Slovakia","si":"Slovenia","sb":"Kepulauan Solomon","so":"Somalia","za":"Afrika Selatan","ss":"Sudan Selatan","es":"Spanyol","lk":"Sri Lanka","sd":"Sudan","sr":"Suriname","sz":"Eswatini","se":"Swedia","ch":"Swiss","sy":"Suriah","tw":"Taiwan","tj":"Tajikistan","tz":"Tanzania","th":"Thailand","tl":"Timor Leste","tg":"Togo","to":"Tonga","tt":"Trinidad and Tobago","tn":"Tunisia","tr":"Turki","tm":"Turkmenistan","tv":"Tuvalu","ug":"Uganda","ua":"Ukraina","ae":"Uni Emirat Arab","gb":"Britania Raya","us":"Amerika Serikat","uy":"Uruguay","uz":"Uzbekistan","vu":"Vanuatu","va":"Vatikan","ve":"Venezuela","vn":"Vietnam","ye":"Yaman","zm":"Zambia","zw":"Zimbabwe"};
 
-        let allItems = Object.entries(countryDB).map(([code, name]) => ({ code, name }));
-        let availableItems = [...allItems];
-        let score = 0;
-        let current;
+        const all = Object.entries(db).map(([code, name]) => ({ code, name }));
+        let pool = [...all], score = 0, cur;
 
-        function newRound() {
-            if (availableItems.length === 0) {
-                alert("Game Selesai! Kamu hebat sudah menebak 250+ negara!");
-                availableItems = [...allItems];
-                score = 0;
-                document.getElementById('score').textContent = score;
-            }
+        function next() {
+            if (!pool.length) pool = [...all];
+            hideH();
+            const idx = Math.floor(Math.random() * pool.length);
+            cur = pool.splice(idx, 1)[0];
 
-            hideHint();
-            const idx = Math.floor(Math.random() * availableItems.length);
-            current = availableItems.splice(idx, 1)[0];
-
-            document.getElementById('counter').textContent = `Sisa: ${availableItems.length} / ${allItems.length}`;
+            document.getElementById('pb').style.width = `${((all.length - pool.length)/all.length)*100}%`;
             
-            const img = document.getElementById('flag-img');
-            img.style.opacity = '0';
-            img.src = `https://flagcdn.com/w640/${current.code}.png`;
-            img.onload = () => img.style.opacity = '1';
+            const img = document.getElementById('f-img');
+            img.style.opacity = '0'; img.style.transform = 'scale(0.8) rotate(-5deg)';
+            img.src = `https://flagcdn.com/w640/${cur.code}.png`;
+            img.onload = () => {
+                img.style.opacity = '1'; img.style.transform = 'scale(1) rotate(0deg)';
+            };
 
-            let choices = [current.name];
-            while (choices.length < 4) {
-                let r = allItems[Math.floor(Math.random() * allItems.length)].name;
-                if (!choices.includes(r)) choices.push(r);
+            let opts = [cur.name];
+            while(opts.length < 4) {
+                let r = all[Math.floor(Math.random()*all.length)].name;
+                if(!opts.includes(r)) opts.push(r);
             }
-            choices.sort(() => Math.random() - 0.5);
+            opts.sort(() => Math.random() - 0.5);
 
-            const grid = document.getElementById('options-grid');
+            const grid = document.getElementById('opts');
             grid.innerHTML = '';
-            choices.forEach(opt => {
+            opts.forEach(name => {
                 const b = document.createElement('button');
-                b.className = 'btn-opt w-full p-4 rounded-2xl text-[11px] font-bold text-left flex justify-between items-center';
-                b.innerHTML = `<span>${opt}</span><div class="w-1.5 h-1.5 rounded-full bg-white/5"></div>`;
-                b.onclick = () => check(opt, b);
+                b.className = 'btn-choice w-full p-5 rounded-[1.5rem] text-[12px] font-medium text-left flex justify-between items-center';
+                b.innerHTML = `<span>${name}</span><div class="w-1.5 h-1.5 rounded-full bg-indigo-500/20 shadow-[0_0_10px_rgba(99,102,241,0.5)]"></div>`;
+                b.onclick = () => check(name, b);
                 grid.appendChild(b);
             });
         }
 
         function check(sel, btn) {
-            const btns = document.querySelectorAll('.btn-opt');
+            const btns = document.querySelectorAll('.btn-choice');
             btns.forEach(b => b.disabled = true);
-
-            if (sel === current.name) {
-                score += 10;
-                document.getElementById('score').textContent = score;
-                btn.classList.add('correct');
-                setTimeout(newRound, 800);
+            if(sel === cur.name) {
+                score += 10; document.getElementById('score').textContent = score;
+                btn.classList.add('correct'); setTimeout(next, 800);
             } else {
                 btn.classList.add('wrong');
-                btns.forEach(b => {
-                    if (b.innerText.trim() === current.name) b.classList.add('correct');
-                });
-                setTimeout(newRound, 2000);
+                btns.forEach(b => { if(b.innerText.trim() === cur.name) b.classList.add('correct'); });
+                setTimeout(next, 1500);
             }
         }
 
-        function showHint() {
-            document.getElementById('hint-text').textContent = current.name;
-            const h = document.getElementById('hint-box');
-            h.style.opacity = '1';
-            h.style.pointerEvents = 'auto';
+        function showH() {
+            document.getElementById('h-txt').textContent = cur.name;
+            const b = document.getElementById('h-box');
+            b.style.opacity = '1'; b.style.pointerEvents = 'auto';
         }
 
-        function hideHint() {
-            const h = document.getElementById('hint-box');
-            h.style.opacity = '0';
-            h.style.pointerEvents = 'none';
+        function hideH() {
+            const b = document.getElementById('h-box');
+            b.style.opacity = '0'; b.style.pointerEvents = 'none';
         }
 
-        newRound();
+        next();
     </script>
 </body>
 </html>
