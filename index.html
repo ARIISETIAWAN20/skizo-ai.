@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GLOBAL FLAG - Ultimate</title>
+    <title>GLOBAL FLAG - Prestige</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
@@ -13,86 +13,88 @@
             display: flex; align-items: center; justify-content: center;
         }
         .main-card {
-            background: rgba(15, 23, 42, 0.8);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-        }
-        .flag-container {
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 1.5rem;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        .hint-box {
-            background: rgba(99, 102, 241, 0.05);
-            border: 1px solid rgba(99, 102, 241, 0.2);
-            max-height: 0; opacity: 0; overflow: hidden;
-            transition: all 0.4s ease-in-out;
-        }
-        .hint-box.active { max-height: 100px; opacity: 1; margin-top: 1rem; padding: 1rem; }
-        .btn-opt {
-            background: rgba(255, 255, 255, 0.03);
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.9));
+            backdrop-filter: blur(25px);
             border: 1px solid rgba(255, 255, 255, 0.08);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 50px 100px -20px rgba(0, 0, 0, 0.8);
+        }
+        .flag-frame {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 2rem;
+            border: 1px solid rgba(99, 102, 241, 0.1);
+            box-shadow: inset 0 0 50px rgba(0,0,0,0.5);
+        }
+        .hint-panel {
+            background: rgba(99, 102, 241, 0.03);
+            border-left: 4px solid #6366f1;
+            max-height: 0; opacity: 0; overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .hint-panel.active { max-height: 200px; opacity: 1; margin-top: 1.5rem; padding: 1.25rem; }
+        .btn-opt {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
         }
         .btn-opt:hover:not(:disabled) {
             background: rgba(99, 102, 241, 0.1);
             border-color: #6366f1;
-            transform: scale(1.01);
+            transform: translateX(5px);
         }
-        .correct { background: #059669 !important; border-color: #10b981 !important; }
-        .wrong { background: #991b1b !important; border-color: #ef4444 !important; }
-        @keyframes pop { 0% { transform: scale(0.9); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
-        .animate-pop { animation: pop 0.5s ease forwards; }
+        .correct { background: #065f46 !important; border-color: #10b981 !important; }
+        .wrong { background: #7f1d1d !important; border-color: #ef4444 !important; }
     </style>
 </head>
 <body class="p-4">
 
-    <div class="max-w-md w-full main-card rounded-[2.5rem] p-8 relative overflow-hidden animate-pop">
-        <div class="flex justify-between items-center mb-8">
+    <div class="max-w-md w-full main-card rounded-[3rem] p-8">
+        <div class="flex justify-between items-center mb-10">
             <div>
-                <h1 class="text-2xl font-800 tracking-tighter italic uppercase">Global<span class="text-indigo-500">Flag</span></h1>
-                <p class="text-[9px] text-slate-500 font-bold tracking-[0.3em]">ULTIMATE EDITION</p>
+                <h1 class="text-3xl font-800 tracking-tighter italic uppercase glow-text">Global<span class="text-indigo-500">Flag</span></h1>
+                <p class="text-[9px] text-indigo-400 font-bold tracking-[0.4em]">PRESTIGE EDITION</p>
             </div>
-            <div class="bg-indigo-500/10 px-4 py-2 rounded-xl border border-indigo-500/20 text-right">
-                <span id="score" class="text-2xl font-800 text-indigo-400 leading-none">0</span>
-                <p class="text-[7px] text-indigo-300/50 font-bold uppercase">Points</p>
+            <div class="text-right">
+                <span id="score" class="text-3xl font-800 text-white">0</span>
+                <p class="text-[8px] text-slate-500 font-bold uppercase tracking-widest">Score</p>
             </div>
         </div>
 
-        <div class="flag-container aspect-[16/10] mb-4 flex items-center justify-center overflow-hidden relative">
-            <img id="f-img" src="" class="max-w-[75%] max-h-[60%] shadow-2xl transition-all duration-500 opacity-0 scale-90">
+        <div class="flag-frame aspect-[16/10] mb-2 flex items-center justify-center relative group">
+            <img id="f-img" src="" class="max-w-[70%] max-h-[60%] shadow-2xl transition-all duration-700 opacity-0 scale-90">
         </div>
 
-        <div id="hint-ui" class="hint-box rounded-2xl">
-            <div class="flex items-center gap-2 mb-1">
-                <span class="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse"></span>
-                <p class="text-[10px] font-bold text-indigo-400 uppercase tracking-widest">Petunjuk Ahli</p>
+        <div id="hint-ui" class="hint-panel rounded-r-2xl">
+            <div class="flex items-center gap-2 mb-2">
+                <div class="w-1.5 h-1.5 bg-indigo-500 rounded-full"></div>
+                <p class="text-[10px] font-bold text-indigo-400 uppercase tracking-widest">Informasi Geopolitik</p>
             </div>
-            <p id="hint-text" class="text-xs text-white leading-relaxed"></p>
+            <p id="hint-loc" class="text-[11px] text-white font-bold mb-1"></p>
+            <p id="hint-trivia" class="text-[11px] text-slate-400 italic leading-relaxed"></p>
         </div>
 
-        <div id="opts" class="grid grid-cols-1 gap-3 mt-6"></div>
+        <div id="opts" class="grid grid-cols-1 gap-3 mt-8"></div>
 
-        <div class="mt-8 flex gap-3">
-            <button onclick="toggleHint()" class="flex-1 py-4 rounded-2xl bg-white/5 border border-white/5 text-[10px] font-bold text-slate-400 uppercase tracking-widest hover:bg-white/10 transition-all">💡 Hint</button>
-            <button onclick="next()" class="flex-[1.5] py-4 rounded-2xl bg-indigo-600 text-[10px] font-800 text-white uppercase tracking-widest shadow-lg shadow-indigo-600/20 hover:bg-indigo-500 transition-all">Skip</button>
+        <div class="mt-10 flex gap-4">
+            <button onclick="toggleHint()" class="flex-1 py-5 rounded-3xl bg-white/5 border border-white/5 text-[10px] font-bold text-slate-400 uppercase tracking-widest hover:bg-white/10 transition-all">💡 Hint</button>
+            <button onclick="next()" class="flex-[1.5] py-5 rounded-3xl bg-indigo-600 text-[10px] font-800 text-white uppercase tracking-widest shadow-xl shadow-indigo-600/30 hover:bg-indigo-500 transition-all">Skip</button>
         </div>
     </div>
 
     <script>
-        // Database Benua Lengkap
-        const continents = {
-            // Asia
-            af:"Asia", am:"Asia", az:"Asia", bh:"Asia", bd:"Asia", bt:"Asia", bn:"Asia", kh:"Asia", cn:"Asia", cy:"Asia", ge:"Asia", in:"Asia", id:"Asia", ir:"Asia", iq:"Asia", il:"Asia", jp:"Asia", jo:"Asia", kz:"Asia", kp:"Asia", kr:"Asia", kw:"Asia", kg:"Asia", la:"Asia", lb:"Asia", my:"Asia", mv:"Asia", mn:"Asia", mm:"Asia", np:"Asia", om:"Asia", pk:"Asia", ps:"Asia", ph:"Asia", qa:"Asia", sa:"Asia", sg:"Asia", lk:"Asia", sy:"Asia", tw:"Asia", tj:"Asia", th:"Asia", tl:"Asia", tr:"Asia", tm:"Asia", ae:"Asia", uz:"Asia", vn:"Asia", ye:"Asia",
-            // Eropa
-            al:"Eropa", ad:"Eropa", at:"Eropa", by:"Eropa", be:"Eropa", ba:"Eropa", bg:"Eropa", hr:"Eropa", cz:"Eropa", dk:"Eropa", ee:"Eropa", fi:"Eropa", fr:"Eropa", de:"Eropa", gr:"Eropa", hu:"Eropa", is:"Eropa", ie:"Eropa", it:"Eropa", lv:"Eropa", li:"Eropa", lt:"Eropa", lu:"Eropa", mt:"Eropa", md:"Eropa", mc:"Eropa", me:"Eropa", nl:"Eropa", mk:"Eropa", no:"Eropa", pl:"Eropa", pt:"Eropa", ro:"Eropa", ru:"Eropa", sm:"Eropa", rs:"Eropa", sk:"Eropa", si:"Eropa", es:"Eropa", se:"Eropa", ch:"Eropa", ua:"Eropa", gb:"Eropa", va:"Eropa",
-            // Afrika
-            dz:"Afrika", ao:"Afrika", bj:"Afrika", bw:"Afrika", bf:"Afrika", bi:"Afrika", cv:"Afrika", cm:"Afrika", cf:"Afrika", td:"Afrika", km:"Afrika", cd:"Afrika", cg:"Afrika", ci:"Afrika", dj:"Afrika", eg:"Afrika", gq:"Afrika", er:"Afrika", sz:"Afrika", et:"Afrika", ga:"Afrika", gm:"Afrika", gh:"Afrika", gn:"Afrika", gw:"Afrika", ke:"Afrika", ls:"Afrika", lr:"Afrika", ly:"Afrika", mg:"Afrika", mw:"Afrika", ml:"Afrika", mr:"Afrika", mu:"Afrika", ma:"Afrika", mz:"Afrika", na:"Afrika", ne:"Afrika", ng:"Afrika", rw:"Afrika", st:"Afrika", sn:"Afrika", sc:"Afrika", sl:"Afrika", so:"Afrika", za:"Afrika", ss:"Afrika", sd:"Afrika", tz:"Afrika", tg:"Afrika", tn:"Afrika", ug:"Afrika", zm:"Afrika", zw:"Afrika",
-            // Amerika
-            ag:"Amerika", ar:"Amerika", bs:"Amerika", bb:"Amerika", bz:"Amerika", bo:"Amerika", br:"Amerika", ca:"Amerika", cl:"Amerika", co:"Amerika", cr:"Amerika", cu:"Amerika", dm:"Amerika", do:"Amerika", ec:"Amerika", sv:"Amerika", gd:"Amerika", gt:"Amerika", gy:"Amerika", ht:"Amerika", hn:"Amerika", jm:"Amerika", mx:"Amerika", ni:"Amerika", pa:"Amerika", py:"Amerika", pe:"Amerika", kn:"Amerika", lc:"Amerika", vc:"Amerika", sr:"Amerika", tt:"Amerika", us:"Amerika", uy:"Amerika", ve:"Amerika",
-            // Oceania
-            au:"Oceania", fj:"Oceania", ki:"Oceania", mh:"Oceania", fm:"Oceania", nr:"Oceania", nz:"Oceania", pw:"Oceania", pg:"Oceania", ws:"Oceania", sb:"Oceania", to:"Oceania", tv:"Oceania", vu:"Oceania"
+        const trivia = {
+            "id": { con: "Asia Tenggara", fact: "Negara kepulauan terbesar dengan lebih dari 17.000 pulau." },
+            "jp": { con: "Asia Timur", fact: "Dikenal sebagai 'Negeri Matahari Terbit' dan rumah bagi Gunung Fuji." },
+            "sa": { con: "Timur Tengah", fact: "Penghasil minyak bumi terbesar dan rumah bagi Gurun Rub' al Khali." },
+            "fr": { con: "Eropa Barat", fact: "Negara paling banyak dikunjungi wisatawan dan terkenal dengan Menara Eiffel." },
+            "br": { con: "Amerika Selatan", fact: "Rumah bagi hutan hujan Amazon dan pemenang Piala Dunia terbanyak." },
+            "eg": { con: "Afrika Utara", fact: "Rumah bagi salah satu peradaban tertua dunia dan Sungai Nil." },
+            "ru": { con: "Eropa/Asia", fact: "Negara dengan wilayah terluas di dunia yang membentang di dua benua." },
+            "us": { con: "Amerika Utara", fact: "Negara dengan ekonomi terbesar dunia dan markas NASA." },
+            "au": { con: "Oceania", fact: "Satu-satunya negara yang juga merupakan sebuah benua penuh." },
+            "tr": { con: "Eropa/Asia", fact: "Memiliki kota Istanbul yang terletak di dua benua sekaligus." },
+            "in": { con: "Asia Selatan", fact: "Negara dengan populasi terbanyak di dunia saat ini." },
+            "de": { con: "Eropa Tengah", fact: "Kekuatan ekonomi Eropa yang terkenal dengan industri otomotifnya." },
+            "default": { con: "Wilayah Spesifik", fact: "Memiliki budaya unik dan sejarah nasional yang sangat kuat." }
         };
 
         const db = {"af":"Afghanistan","al":"Albania","dz":"Aljazair","ad":"Andorra","ao":"Angola","ag":"Antigua & Barbuda","ar":"Argentina","am":"Armenia","au":"Australia","at":"Austria","az":"Azerbaijan","bs":"Bahama","bh":"Bahrain","bd":"Bangladesh","bb":"Barbados","by":"Belarus","be":"Belgia","bz":"Belize","bj":"Benin","bt":"Bhutan","bo":"Bolivia","ba":"Bosnia","bw":"Botswana","br":"Brasil","bn":"Brunei Darussalam","bg":"Bulgaria","bf":"Burkina Faso","bi":"Burundi","kh":"Kamboja","cm":"Kamerun","ca":"Kanada","cv":"Tanjung Verde","cf":"Republik Afrika Tengah","td":"Chad","cl":"Chili","cn":"Tiongkok","co":"Kolombia","km":"Komoro","cg":"Kongo","cr":"Kosta Rika","ci":"Pantai Gading","hr":"Kroasia","cu":"Kuba","cy":"Siprus","cz":"Ceko","dk":"Denmark","dj":"Djibouti","dm":"Dominika","do":"Republik Dominika","ec":"Ekuador","eg":"Mesir","sv":"El Salvador","gq":"Guinea Khatulistiwa","er":"Eritrea","ee":"Estonia","et":"Etiopia","fj":"Fiji","fi":"Finlandia","fr":"Prancis","ga":"Gabon","gm":"Gambia","ge":"Georgia","de":"Jerman","gh":"Ghana","gr":"Yunani","gd":"Grenada","gt":"Guatemala","gn":"Guinea","gw":"Guinea-Bissau","gy":"Guyana","ht":"Haiti","hn":"Honduras","hu":"Hungaria","is":"Islandia","in":"India","id":"Indonesia","ir":"Iran","iq":"Irak","ie":"Irlandia","il":"Israel","it":"Italia","jm":"Jamaika","jp":"Jepang","jo":"Yordania","kz":"Kazakhstan","ke":"Kenya","ki":"Kiribati","kp":"Korea Utara","kr":"Korea Selatan","kw":"Kuwait","kg":"Kirgistan","la":"Laos","lv":"Latvia","lb":"Lebanon","ls":"Lesotho","lr":"Liberia","ly":"Libya","li":"Liechtenstein","lt":"Lituania","lu":"Luksemburg","mg":"Madagaskar","mw":"Malawi","my":"Malaysia","mv":"Maladewa","ml":"Mali","mt":"Malta","mh":"Kepulauan Marshall","mr":"Mauritania","mu":"Mauritius","mx":"Meksiko","fm":"Mikronesia","md":"Moldova","mc":"Monako","mn":"Mongolia","me":"Montenegro","ma":"Maroko","mz":"Mozambik","mm":"Myanmar","na":"Namibia","nr":"Nauru","np":"Nepal","nl":"Belanda","nz":"Selandia Baru","ni":"Nikaragua","ne":"Niger","ng":"Nigeria","no":"Norwegia","om":"Oman","pk":"Pakistan","pw":"Palau","ps":"Palestina","pa":"Panama","pg":"Papua Nugini","py":"Paraguay","pe":"Peru","ph":"Filipina","pl":"Polandia","pt":"Portugal","qa":"Qatar","ro":"Rumania","ru":"Rusia","rw":"Rwanda","kn":"Saint Kitts and Nevis","lc":"Saint Lucia","vc":"Saint Vincent","ws":"Samoa","sm":"San Marino","st":"Sao Tome & Principe","sa":"Arab Saudi","sn":"Senegal","rs":"Serbia","sc":"Seychelles","sl":"Sierra Leone","sg":"Singapura","sk":"Slovakia","si":"Slovenia","sb":"Kepulauan Solomon","so":"Somalia","za":"Afrika Selatan","ss":"Sudan Selatan","es":"Spanyol","lk":"Sri Lanka","sd":"Sudan","sr":"Suriname","sz":"Eswatini","se":"Swedia","ch":"Swiss","sy":"Suriah","tw":"Taiwan","tj":"Tajikistan","tz":"Tanzania","th":"Thailand","tl":"Timor Leste","tg":"Togo","to":"Tonga","tt":"Trinidad and Tobago","tn":"Tunisia","tr":"Turki","tm":"Turkmenistan","tv":"Tuvalu","ug":"Uganda","ua":"Ukraina","ae":"Uni Emirat Arab","gb":"Britania Raya","us":"Amerika Serikat","uy":"Uruguay","uz":"Uzbekistan","vu":"Vanuatu","va":"Vatikan","ve":"Venezuela","vn":"Vietnam","ye":"Yaman","zm":"Zambia","zw":"Zimbabwe"};
@@ -111,9 +113,10 @@
             img.src = `https://flagcdn.com/w640/${cur.code}.png`;
             img.onload = () => { img.style.opacity = '1'; };
 
-            // Logic Hint yang diperbaiki
-            const continent = continents[cur.code] || "Global";
-            document.getElementById('hint-text').innerHTML = `Negara ini berada di benua <b class="text-indigo-400">${continent}</b> dan namanya berawalan dengan huruf <b class="text-indigo-400">"${cur.name.charAt(0)}"</b>.`;
+            // Logic Hint Baru (Tanpa Inisial)
+            const h = trivia[cur.code] || trivia["default"];
+            document.getElementById('hint-loc').textContent = `Kawasan: ${h.con}`;
+            document.getElementById('hint-trivia').textContent = h.fact;
 
             let opts = [cur.name];
             while(opts.length < 4) {
@@ -126,8 +129,8 @@
             grid.innerHTML = '';
             opts.forEach(name => {
                 const b = document.createElement('button');
-                b.className = 'btn-opt w-full p-4 rounded-2xl text-[12px] font-semibold text-left flex justify-between items-center';
-                b.innerHTML = `<span>${name}</span><div class="w-1 h-1 rounded-full bg-indigo-500/20"></div>`;
+                b.className = 'btn-opt w-full p-5 rounded-2xl text-[12px] font-semibold text-left flex justify-between items-center';
+                b.innerHTML = `<span>${name}</span><div class="w-1.5 h-1.5 rounded-full bg-indigo-500/20"></div>`;
                 b.onclick = () => check(name, b);
                 grid.appendChild(b);
             });
