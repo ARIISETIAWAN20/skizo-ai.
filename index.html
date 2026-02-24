@@ -3,84 +3,91 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GLOBAL FLAG - Elite Challenge</title>
+    <title>GLOBAL FLAG - Insight Edition</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;500;800&display=swap" rel="stylesheet">
     <style>
-        :root { --accent: #8b5cf6; --cyan: #06b6d4; }
         body { 
-            font-family: 'Space Grotesk', sans-serif; 
-            background: radial-gradient(circle at top right, #1e1b4b, #020617);
-            color: white; min-height: 100vh; margin: 0; overflow-x: hidden;
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background: radial-gradient(circle at 0% 0%, #1e1b4b 0%, #020617 100%);
+            color: white; min-height: 100vh; display: flex; align-items: center; justify-content: center;
         }
-        .main-card {
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(40px);
+        .glass-card {
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(30px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.7);
         }
-        .flag-frame {
-            background: linear-gradient(145deg, rgba(255,255,255,0.05), rgba(255,255,255,0));
-            border: 1px solid rgba(255,255,255,0.1);
-            box-shadow: inset 0 2px 20px rgba(0,0,0,0.5);
+        .flag-box {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 2rem;
         }
-        .btn-choice {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-            position: relative; overflow: hidden;
+        .hint-panel {
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px dashed rgba(99, 102, 241, 0.3);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            max-height: 0; opacity: 0; overflow: hidden;
         }
-        .btn-choice:hover:not(:disabled) {
-            background: rgba(139, 92, 246, 0.1);
-            border-color: var(--accent);
-            box-shadow: 0 0 20px rgba(139, 92, 246, 0.2);
-            transform: translateY(-3px);
+        .hint-panel.active { max-height: 150px; opacity: 1; margin-top: 1rem; padding: 1rem; }
+        .btn-option {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
         }
-        .glow-text { text-shadow: 0 0 15px rgba(139, 92, 246, 0.5); }
-        .correct { background: #059669 !important; border-color: #10b981 !important; box-shadow: 0 0 30px rgba(16, 185, 129, 0.3); }
+        .btn-option:hover:not(:disabled) { background: rgba(99, 102, 241, 0.15); border-color: #6366f1; transform: translateY(-2px); }
+        .correct { background: #059669 !important; border-color: #10b981 !important; }
         .wrong { background: #991b1b !important; border-color: #ef4444 !important; }
-        .progress-bar { height: 2px; background: var(--accent); transition: width 0.5s ease; box-shadow: 0 0 10px var(--accent); }
     </style>
 </head>
-<body class="flex items-center justify-center p-6">
+<body class="p-4">
 
-    <div class="max-w-md w-full main-card rounded-[3rem] p-8 relative overflow-hidden">
-        <div class="absolute top-0 left-0 w-full bg-white/5">
-            <div id="pb" class="progress-bar" style="width: 0%"></div>
-        </div>
-
-        <div class="flex justify-between items-start mb-10">
-            <div>
-                <h1 class="text-3xl font-bold tracking-tighter italic glow-text">GLOBAL<span class="text-indigo-500">FLAG</span></h1>
-                <p id="stats" class="text-[10px] text-slate-500 font-bold uppercase tracking-[0.3em] mt-1">MASTER EDITION</p>
-            </div>
-            <div class="flex flex-col items-end">
-                <span class="text-[9px] text-slate-400 font-bold uppercase">Points</span>
-                <span id="score" class="text-3xl font-bold text-indigo-400 leading-none">0</span>
+    <div class="max-w-md w-full glass-card rounded-[3rem] p-8">
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-2xl font-800 italic tracking-tighter italic uppercase">Global<span class="text-indigo-400">Flag</span></h1>
+            <div class="text-right">
+                <span id="score" class="text-2xl font-800 text-indigo-400">0</span>
+                <p class="text-[8px] text-slate-500 font-bold uppercase tracking-widest">Points</p>
             </div>
         </div>
 
-        <div class="relative mb-10">
-            <div class="flag-frame aspect-[16/10] rounded-[2.5rem] flex items-center justify-center overflow-hidden">
-                <img id="f-img" src="" class="max-w-[75%] max-h-[60%] shadow-2xl transition-all duration-700 opacity-0 scale-75">
-                
-                <div id="h-box" class="absolute inset-0 bg-slate-950/98 opacity-0 pointer-events-none transition-all duration-500 flex flex-col items-center justify-center z-50 rounded-[2.5rem]">
-                    <span class="text-indigo-500 text-[10px] font-bold tracking-widest uppercase mb-2">Identification:</span>
-                    <p id="h-txt" class="text-2xl font-bold text-white mb-6 px-6 text-center"></p>
-                    <button onclick="hideH()" class="px-8 py-3 bg-white/5 border border-white/10 rounded-full text-[10px] font-bold hover:bg-white/10 transition-all">RESUME</button>
-                </div>
-            </div>
+        <div class="flag-box aspect-[16/10] mb-4 flex items-center justify-center overflow-hidden">
+            <img id="f-img" src="" class="max-w-[70%] max-h-[60%] shadow-2xl transition-all duration-700 opacity-0 scale-90">
         </div>
 
-        <div id="opts" class="grid grid-cols-1 gap-4"></div>
+        <div id="hint-area" class="hint-panel rounded-2xl border">
+            <p class="text-[10px] font-bold text-indigo-400 uppercase tracking-widest mb-1">🔍 Clue:</p>
+            <p id="hint-continent" class="text-[11px] text-white font-bold mb-1"></p>
+            <p id="hint-fact" class="text-[11px] text-slate-400 italic leading-relaxed"></p>
+        </div>
 
-        <div class="mt-10 flex gap-4">
-            <button onclick="showH()" class="flex-1 py-5 rounded-3xl bg-white/5 border border-white/10 text-[11px] font-bold hover:bg-white/10 transition-all uppercase tracking-widest text-slate-400">Hint</button>
-            <button onclick="next()" class="flex-[1.5] py-5 rounded-3xl bg-indigo-600 text-[11px] font-bold uppercase tracking-widest shadow-[0_10px_30px_rgba(79,70,229,0.3)] hover:bg-indigo-500 transition-all">Skip</button>
+        <div id="opts" class="grid grid-cols-1 gap-3 mt-6"></div>
+
+        <div class="mt-8 flex gap-3">
+            <button onclick="toggleHint()" class="flex-1 py-4 rounded-2xl bg-white/5 border border-white/5 text-[10px] font-bold text-slate-400 uppercase tracking-widest hover:bg-white/10 transition-all">💡 Hint</button>
+            <button onclick="next()" class="flex-[1.5] py-4 rounded-2xl bg-indigo-600 text-[10px] font-800 text-white uppercase tracking-widest shadow-lg shadow-indigo-600/20 hover:bg-indigo-500 transition-all">Skip</button>
         </div>
     </div>
 
     <script>
+        // Database tambahan untuk Hint (Benua & Fakta)
+        const countryData = {
+            "id": { continent: "Asia", fact: "Negara kepulauan terbesar dengan tradisi Batik yang mendunia." },
+            "jp": { continent: "Asia", fact: "Negara Samurai yang terkenal dengan tradisi upacara minum teh." },
+            "sa": { continent: "Asia", fact: "Rumah bagi kota suci Mekkah dan tradisi keramahan kopi Arab." },
+            "kr": { continent: "Asia", fact: "Negara ginseng dengan tradisi pakaian Hanbok." },
+            "ps": { continent: "Asia", fact: "Negara di Timur Tengah yang terkenal dengan pohon zaitunnya." },
+            "tr": { continent: "Eropa/Asia", fact: "Terkenal dengan karpet Turki dan kedai kopi bersejarah." },
+            "fr": { continent: "Eropa", fact: "Pusat mode dunia dengan tradisi kuliner Baguette." },
+            "us": { continent: "Amerika Utara", fact: "Negara adidaya dengan tradisi pesta kembang api 4 Juli." },
+            "br": { continent: "Amerika Selatan", fact: "Negara Samba yang merayakan Karnaval terbesar di dunia." },
+            "eg": { continent: "Afrika", fact: "Negara Piramida dengan sejarah peradaban kuno Sungai Nil." },
+            "gb": { continent: "Eropa", fact: "Terkenal dengan tradisi minum teh sore (Afternoon Tea)." },
+            "au": { continent: "Australia", fact: "Dikenal dengan hewan Kanguru dan suku asli Aborigin." },
+            // Default untuk negara lain
+            "default": { continent: "Informasi Benua Segera Hadir", fact: "Negara unik dengan kebudayaan khas setempat." }
+        };
+
         const db = {"af":"Afghanistan","al":"Albania","dz":"Aljazair","ad":"Andorra","ao":"Angola","ag":"Antigua & Barbuda","ar":"Argentina","am":"Armenia","au":"Australia","at":"Austria","az":"Azerbaijan","bs":"Bahama","bh":"Bahrain","bd":"Bangladesh","bb":"Barbados","by":"Belarus","be":"Belgia","bz":"Belize","bj":"Benin","bt":"Bhutan","bo":"Bolivia","ba":"Bosnia","bw":"Botswana","br":"Brasil","bn":"Brunei Darussalam","bg":"Bulgaria","bf":"Burkina Faso","bi":"Burundi","kh":"Kamboja","cm":"Kamerun","ca":"Kanada","cv":"Tanjung Verde","cf":"Republik Afrika Tengah","td":"Chad","cl":"Chili","cn":"Tiongkok","co":"Kolombia","km":"Komoro","cg":"Kongo","cr":"Kosta Rika","ci":"Pantai Gading","hr":"Kroasia","cu":"Kuba","cy":"Siprus","cz":"Ceko","dk":"Denmark","dj":"Djibouti","dm":"Dominika","do":"Republik Dominika","ec":"Ekuador","eg":"Mesir","sv":"El Salvador","gq":"Guinea Khatulistiwa","er":"Eritrea","ee":"Estonia","et":"Etiopia","fj":"Fiji","fi":"Finlandia","fr":"Prancis","ga":"Gabon","gm":"Gambia","ge":"Georgia","de":"Jerman","gh":"Ghana","gr":"Yunani","gd":"Grenada","gt":"Guatemala","gn":"Guinea","gw":"Guinea-Bissau","gy":"Guyana","ht":"Haiti","hn":"Honduras","hu":"Hungaria","is":"Islandia","in":"India","id":"Indonesia","ir":"Iran","iq":"Irak","ie":"Irlandia","il":"Israel","it":"Italia","jm":"Jamaika","jp":"Jepang","jo":"Yordania","kz":"Kazakhstan","ke":"Kenya","ki":"Kiribati","kp":"Korea Utara","kr":"Korea Selatan","kw":"Kuwait","kg":"Kirgistan","la":"Laos","lv":"Latvia","lb":"Lebanon","ls":"Lesotho","lr":"Liberia","ly":"Libya","li":"Liechtenstein","lt":"Lituania","lu":"Luksemburg","mg":"Madagaskar","mw":"Malawi","my":"Malaysia","mv":"Maladewa","ml":"Mali","mt":"Malta","mh":"Kepulauan Marshall","mr":"Mauritania","mu":"Mauritius","mx":"Meksiko","fm":"Mikronesia","md":"Moldova","mc":"Monako","mn":"Mongolia","me":"Montenegro","ma":"Maroko","mz":"Mozambik","mm":"Myanmar","na":"Namibia","nr":"Nauru","np":"Nepal","nl":"Belanda","nz":"Selandia Baru","ni":"Nikaragua","ne":"Niger","ng":"Nigeria","no":"Norwegia","om":"Oman","pk":"Pakistan","pw":"Palau","ps":"Palestina","pa":"Panama","pg":"Papua Nugini","py":"Paraguay","pe":"Peru","ph":"Filipina","pl":"Polandia","pt":"Portugal","qa":"Qatar","ro":"Rumania","ru":"Rusia","rw":"Rwanda","kn":"Saint Kitts and Nevis","lc":"Saint Lucia","vc":"Saint Vincent","ws":"Samoa","sm":"San Marino","st":"Sao Tome & Principe","sa":"Arab Saudi","sn":"Senegal","rs":"Serbia","sc":"Seychelles","sl":"Sierra Leone","sg":"Singapura","sk":"Slovakia","si":"Slovenia","sb":"Kepulauan Solomon","so":"Somalia","za":"Afrika Selatan","ss":"Sudan Selatan","es":"Spanyol","lk":"Sri Lanka","sd":"Sudan","sr":"Suriname","sz":"Eswatini","se":"Swedia","ch":"Swiss","sy":"Suriah","tw":"Taiwan","tj":"Tajikistan","tz":"Tanzania","th":"Thailand","tl":"Timor Leste","tg":"Togo","to":"Tonga","tt":"Trinidad and Tobago","tn":"Tunisia","tr":"Turki","tm":"Turkmenistan","tv":"Tuvalu","ug":"Uganda","ua":"Ukraina","ae":"Uni Emirat Arab","gb":"Britania Raya","us":"Amerika Serikat","uy":"Uruguay","uz":"Uzbekistan","vu":"Vanuatu","va":"Vatikan","ve":"Venezuela","vn":"Vietnam","ye":"Yaman","zm":"Zambia","zw":"Zimbabwe"};
 
         const all = Object.entries(db).map(([code, name]) => ({ code, name }));
@@ -88,18 +95,19 @@
 
         function next() {
             if (!pool.length) pool = [...all];
-            hideH();
+            document.getElementById('hint-area').classList.remove('active');
             const idx = Math.floor(Math.random() * pool.length);
             cur = pool.splice(idx, 1)[0];
-
-            document.getElementById('pb').style.width = `${((all.length - pool.length)/all.length)*100}%`;
             
             const img = document.getElementById('f-img');
-            img.style.opacity = '0'; img.style.transform = 'scale(0.8) rotate(-5deg)';
+            img.style.opacity = '0'; img.style.transform = 'scale(0.8)';
             img.src = `https://flagcdn.com/w640/${cur.code}.png`;
-            img.onload = () => {
-                img.style.opacity = '1'; img.style.transform = 'scale(1) rotate(0deg)';
-            };
+            img.onload = () => { img.style.opacity = '1'; img.style.transform = 'scale(1)'; };
+
+            // Setup Hint Data
+            const hintData = countryData[cur.code] || countryData["default"];
+            document.getElementById('hint-continent').textContent = `Benua: ${hintData.continent}`;
+            document.getElementById('hint-fact').textContent = hintData.fact;
 
             let opts = [cur.name];
             while(opts.length < 4) {
@@ -112,15 +120,15 @@
             grid.innerHTML = '';
             opts.forEach(name => {
                 const b = document.createElement('button');
-                b.className = 'btn-choice w-full p-5 rounded-[1.5rem] text-[12px] font-medium text-left flex justify-between items-center';
-                b.innerHTML = `<span>${name}</span><div class="w-1.5 h-1.5 rounded-full bg-indigo-500/20 shadow-[0_0_10px_rgba(99,102,241,0.5)]"></div>`;
+                b.className = 'btn-option w-full p-4 rounded-2xl text-[12px] font-medium text-left flex justify-between items-center';
+                b.innerHTML = `<span>${name}</span><div class="w-1.5 h-1.5 rounded-full bg-indigo-500/20"></div>`;
                 b.onclick = () => check(name, b);
                 grid.appendChild(b);
             });
         }
 
         function check(sel, btn) {
-            const btns = document.querySelectorAll('.btn-choice');
+            const btns = document.querySelectorAll('.btn-option');
             btns.forEach(b => b.disabled = true);
             if(sel === cur.name) {
                 score += 10; document.getElementById('score').textContent = score;
@@ -128,19 +136,12 @@
             } else {
                 btn.classList.add('wrong');
                 btns.forEach(b => { if(b.innerText.trim() === cur.name) b.classList.add('correct'); });
-                setTimeout(next, 1500);
+                setTimeout(next, 2000);
             }
         }
 
-        function showH() {
-            document.getElementById('h-txt').textContent = cur.name;
-            const b = document.getElementById('h-box');
-            b.style.opacity = '1'; b.style.pointerEvents = 'auto';
-        }
-
-        function hideH() {
-            const b = document.getElementById('h-box');
-            b.style.opacity = '0'; b.style.pointerEvents = 'none';
+        function toggleHint() {
+            document.getElementById('hint-area').classList.toggle('active');
         }
 
         next();
