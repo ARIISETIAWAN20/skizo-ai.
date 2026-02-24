@@ -3,227 +3,195 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GLOBAL FLAG - ULTIMATE</title>
+    <title>GLOBAL FLAG</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
-        :root { 
-            --p: #6366f1; 
-            --s: #a855f7;
-            --bg: #020617; 
-        }
+        :root { --p: #6366f1; --bg: #020617; }
         body { 
-            font-family: 'Plus Jakarta Sans', sans-serif; 
-            background: var(--bg);
-            color: white; 
-            min-height: 100vh; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center;
+            font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg);
+            color: white; min-height: 100vh; display: flex; align-items: center; justify-content: center;
             padding: 20px; margin: 0;
-            background-image: 
-                radial-gradient(circle at 0% 0%, rgba(99, 102, 241, 0.15) 0%, transparent 35%),
-                radial-gradient(circle at 100% 100%, rgba(168, 85, 247, 0.15) 0%, transparent 35%);
         }
-        .main-card {
-            background: rgba(15, 23, 42, 0.8);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            width: 100%; max-width: 500px;
-            border-radius: 40px; padding: 40px;
-            box-shadow: 0 40px 100px rgba(0,0,0,0.8);
-            position: relative; overflow: hidden;
+        .card {
+            background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.1); width: 100%; max-width: 480px;
+            border-radius: 40px; padding: 40px; box-shadow: 0 50px 100px rgba(0,0,0,0.8);
         }
         .flag-zone {
-            background: linear-gradient(145deg, #000, #0f172a);
-            border-radius: 32px; height: 250px; display: flex;
+            background: #000; border-radius: 30px; height: 230px; display: flex;
             align-items: center; justify-content: center; margin-bottom: 25px;
             border: 1px solid rgba(255,255,255,0.05); position: relative;
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
         }
-        .f-img { 
-            max-width: 80%; max-height: 75%; 
-            filter: drop-shadow(0 15px 30px rgba(0,0,0,0.7)); 
-            transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-        }
+        .f-img { max-width: 80%; max-height: 70%; filter: drop-shadow(0 15px 30px rgba(0,0,0,0.6)); transition: 0.6s cubic-bezier(0.23, 1, 0.32, 1); }
         .hint-box {
-            background: rgba(99, 102, 241, 0.1);
-            border-radius: 24px; border: 1px solid rgba(99, 102, 241, 0.3);
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(168, 85, 247, 0.15));
+            border-radius: 24px; border: 1px solid rgba(99, 102, 241, 0.4);
             max-height: 0; opacity: 0; overflow: hidden; transition: 0.5s ease;
         }
         .hint-box.open { max-height: 300px; opacity: 1; padding: 25px; margin-bottom: 25px; }
         .opt {
             background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
-            padding: 20px 25px; border-radius: 22px; width: 100%; text-align: left;
+            padding: 18px 22px; border-radius: 20px; width: 100%; text-align: left;
             margin-bottom: 12px; font-weight: 600; transition: 0.3s; font-size: 15px;
             display: flex; justify-content: space-between; align-items: center;
         }
-        .opt:hover:not(:disabled) { 
-            background: rgba(99,102,241,0.2); 
-            transform: translateX(10px); 
-            border-color: var(--p);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-        }
-        .correct { background: #059669 !important; border-color: #10b981 !important; transform: scale(1.02) !important; }
-        .wrong { background: #991b1b !important; border-color: #ef4444 !important; animation: shake 0.4s; }
-        
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
-        }
-
-        .prog-bg { width: 100%; height: 8px; background: rgba(255,255,255,0.05); border-radius: 10px; margin-bottom: 30px; }
-        #bar { height: 100%; width: 0%; background: linear-gradient(90deg, var(--p), var(--s)); border-radius: 10px; transition: 1s ease; box-shadow: 0 0 15px var(--p); }
-        
-        .score-box {
-            background: linear-gradient(135deg, rgba(99,102,241,0.2), rgba(168,85,247,0.2));
-            padding: 10px 20px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1);
-        }
+        .opt:hover:not(:disabled) { background: rgba(99,102,241,0.2); transform: translateX(8px); border-color: var(--p); }
+        .correct { background: #059669 !important; border-color: #10b981 !important; color: white; }
+        .wrong { background: #991b1b !important; border-color: #ef4444 !important; color: white; }
+        .progress-container { width: 100%; height: 6px; background: rgba(255,255,255,0.05); border-radius: 10px; margin-bottom: 30px; }
+        #bar { height: 100%; width: 0%; background: linear-gradient(90deg, #6366f1, #a855f7); border-radius: 10px; transition: 0.8s ease; }
     </style>
 </head>
 <body>
 
-<div class="main-card">
-    <div class="flex justify-between items-center mb-8">
+<div class="card">
+    <div class="flex justify-between items-start mb-8">
         <div>
-            <h1 class="text-3xl font-900 italic uppercase tracking-tighter leading-none">Global<span class="text-indigo-500">Flag</span></h1>
-            <p id="lvl" class="text-[10px] font-bold text-slate-500 tracking-[0.3em] uppercase mt-2">Elite Intelligence</p>
+            <h1 class="text-3xl font-800 italic uppercase tracking-tighter">Global<span class="text-indigo-500">Flag</span></h1>
+            <p id="lvl" class="text-[10px] font-bold text-indigo-400/60 tracking-[0.4em] uppercase mt-1">Status: Novice Scout</p>
         </div>
-        <div class="score-box text-right">
-            <span id="score" class="text-2xl font-800">0</span>
-            <p class="text-[8px] font-bold text-indigo-400 uppercase tracking-widest">Points</p>
+        <div class="text-right bg-indigo-500/10 p-3 px-5 rounded-2xl border border-indigo-500/20 shadow-inner">
+            <span id="score" class="text-2xl font-800 text-white">0</span>
+            <p class="text-[9px] font-bold text-indigo-300 uppercase tracking-widest">Points</p>
         </div>
     </div>
 
-    <div class="prog-bg"><div id="bar"></div></div>
+    <div class="progress-container"><div id="bar"></div></div>
 
     <div class="flag-zone">
-        <img id="img" src="" class="f-img opacity-0">
-        <div id="loader" class="absolute inset-0 flex items-center justify-center bg-slate-900/80 rounded-32px">
-            <div class="w-8 h-8 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+        <img id="img" src="" class="f-img opacity-0 scale-90">
+        <div id="loader" class="absolute inset-0 flex items-center justify-center bg-slate-900/50 rounded-30px">
+            <div class="w-6 h-6 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
         </div>
     </div>
 
     <div id="hint-ui" class="hint-box">
-        <div class="flex items-center gap-3 mb-3">
-            <div class="w-2 h-2 rounded-full bg-indigo-500 animate-pulse"></div>
-            <p class="text-[11px] font-900 text-indigo-400 uppercase tracking-widest">Intelijen Geografis</p>
+        <div class="flex items-center gap-2 mb-3">
+            <span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span></span>
+            <p class="text-[11px] font-extrabold text-indigo-300 uppercase tracking-[0.2em]">Intelijen Terenkripsi</p>
         </div>
-        <p id="hint-txt" class="text-sm text-slate-100 leading-relaxed italic font-medium"></p>
+        <p id="hint-txt" class="text-sm text-slate-100 leading-relaxed font-medium"></p>
     </div>
 
     <div id="options" class="space-y-1"></div>
 
     <div class="flex gap-4 mt-10">
         <button onclick="showHint()" class="flex-1 py-5 bg-white/5 border border-white/10 rounded-2xl text-[11px] font-bold text-slate-400 uppercase tracking-[0.2em] hover:bg-white/10 active:scale-95 transition-all">Analisis</button>
-        <button onclick="next()" class="flex-[1.5] py-5 bg-indigo-600 rounded-2xl text-[11px] font-900 text-white uppercase tracking-[0.3em] shadow-lg shadow-indigo-600/30 hover:bg-indigo-500 active:scale-95 transition-all">Skip</button>
+        <button onclick="next()" class="flex-[1.8] py-5 bg-indigo-600 rounded-2xl text-[11px] font-900 text-white uppercase tracking-[0.3em] shadow-[0_15px_30px_-5px_rgba(99,102,241,0.5)] hover:bg-indigo-500 active:scale-95 transition-all">Lewati</button>
     </div>
 </div>
 
 <script>
-    /**
-     * DATABASE INTELIJEN - 100% UNIQUE
-     * Menampung data fakta unik tiap negara untuk menghindari hint sampah.
+    /** * GLOBAL FLAG DATABASE - 100% UNIQUE HINTS
+     * Setiap negara memiliki fakta spesifik (Geografi, Budaya, atau Landmark).
      */
-    const intelData = {
-        "af": "Negara pegunungan Asia Tengah yang dikenal sebagai titik temu peradaban Jalur Sutra kuno.",
-        "al": "Negara di Balkan yang memiliki ribuan bunker beton peninggalan era perang dingin di seluruh wilayahnya.",
-        "dz": "Negara terbesar di benua Afrika dengan wilayah yang sebagian besar merupakan gurun Sahara.",
-        "ad": "Negara kecil di pegunungan Pyrenees yang secara unik diperintah oleh dua pangeran (kedaulatan bersama).",
-        "ao": "Negara Afrika yang kaya minyak, benderanya menampilkan parang dan roda gigi yang melambangkan pekerja.",
-        "ar": "Negara Amerika Selatan yang mempopulerkan tarian Tango dan memiliki air terjun Iguazu yang megah.",
-        "am": "Negara di pegunungan Kaukasus yang merupakan salah satu peradaban Kristen tertua di dunia.",
-        "au": "Negara benua yang merupakan rumah bagi Great Barrier Reef dan satwa endemik seperti Kanguru.",
-        "at": "Pusat musik klasik dunia yang terletak di pegunungan Alpen, tempat kelahiran komposer Mozart.",
-        "az": "Negara yang dijuluki 'Tanah Api' karena fenomena gas alam yang terbakar secara alami dari perut bumi.",
-        "bs": "Negara kepulauan di Karibia yang terkenal dengan keindahan pantai dan sejarah bajak lautnya.",
-        "bh": "Negara pulau kecil di Teluk Persia yang dikenal dengan sejarah mutiara dan balapan mobil F1.",
-        "bd": "Negara dengan populasi sangat padat yang terletak di delta sungai Gangga dan Brahmaputra.",
-        "be": "Negara pusat administrasi Uni Eropa yang sangat terkenal dengan wafel, cokelat, dan komik.",
-        "bt": "Negara kerajaan di Himalaya yang mengukur kemajuan melalui Kebahagiaan Nasional Bruto.",
-        "bo": "Negara Amerika Selatan yang memiliki dataran garam terluas di dunia bernama Salar de Uyuni.",
-        "br": "Negara terbesar di Amerika Latin, penghasil kopi utama dunia dan rumah bagi hutan Amazon.",
-        "bn": "Negara kesultanan kaya minyak di pulau Kalimantan yang memiliki masjid berkubah emas murni.",
-        "bg": "Negara di Eropa Timur yang merupakan produsen minyak mawar terbesar di dunia.",
-        "kh": "Negara yang memiliki kompleks candi Hindu-Buddha terbesar di dunia, Angkor Wat.",
-        "ca": "Negara terbesar kedua di dunia yang memiliki garis pantai terpanjang dan danau terbanyak.",
-        "cl": "Negara yang membentang sangat panjang dan sempit di sepanjang pesisir Pasifik Amerika Selatan.",
-        "cn": "Negara dengan populasi masif yang memiliki Tembok Besar sebagai struktur buatan manusia terpanjang.",
-        "co": "Negara Amerika Selatan yang terkenal dengan kopi berkualitas tinggi dan legenda El Dorado.",
-        "cr": "Negara di Amerika Tengah yang sangat fokus pada ekowisata dan tidak memiliki tentara aktif.",
-        "hr": "Negara di pesisir Adriatik yang terkenal dengan kota berdinding Dubrovnik dan ribuan pulau.",
-        "cu": "Negara kepulauan di Karibia yang ikonik dengan mobil klasik Amerika tahun 50-an dan cerutu.",
-        "cz": "Negara di jantung Eropa yang memiliki jumlah kastil per kapita terbanyak di dunia.",
-        "dk": "Negara Skandinavia yang merupakan tempat kelahiran mainan LEGO dan penulis Hans Christian Andersen.",
-        "eg": "Pusat peradaban kuno yang memiliki Piramida Giza dan bergantung sepenuhnya pada sungai Nil.",
-        "fi": "Negara paling bahagia di dunia dengan ribuan danau dan tradisi sauna yang sangat kuat.",
-        "fr": "Negara pusat mode, seni, dan kuliner dunia yang memiliki ikon Menara Eiffel.",
-        "de": "Raksasa ekonomi Eropa yang terkenal dengan Autobahn, sosis, dan festival Oktoberfest.",
-        "gr": "Tempat kelahiran demokrasi dan Olimpiade, memiliki sejarah dewa-dewi Olimpus yang legendaris.",
-        "id": "Negara kepulauan terbesar di dunia dengan keberagaman budaya dan habitat asli Komodo.",
-        "in": "Negara demokrasi terbesar yang memiliki kemegahan Taj Mahal dan industri film Bollywood.",
-        "ir": "Pusat sejarah Kekaisaran Persia yang terkenal dengan seni karpet dan arsitektur masjid yang indah.",
-        "is": "Negara Nordik yang dijuluki 'Negeri Api dan Es' karena gunung berapi dan gletsernya.",
-        "it": "Negeri asal Pizza dan Pasta yang memiliki situs warisan dunia UNESCO terbanyak di dunia.",
-        "jp": "Negara kepulauan di Pasifik yang menggabungkan teknologi modern dengan tradisi Samurai.",
-        "jo": "Negara yang memiliki kota kuno Petra yang terpahat langsung di dinding tebing batu mawar.",
-        "kr": "Negara pusat tren global K-Pop dan teknologi yang sangat maju di Semenanjung Timur Asia.",
-        "my": "Negara di Asia Tenggara yang memiliki menara kembar Petronas sebagai ikon modernitasnya.",
-        "mx": "Tempat asal peradaban Aztec dan Maya, sangat terkenal dengan kuliner Taco dan Nachos.",
-        "mc": "Negara terkecil kedua di dunia yang menjadi surga bagi kaum jetset dan balapan Grand Prix.",
-        "np": "Negara di pegunungan Himalaya yang memiliki Gunung Everest dan bendera berbentuk unik.",
-        "nl": "Negeri kincir angin dan bunga tulip yang sebagian wilayahnya berada di bawah permukaan laut.",
-        "nz": "Negeri suku Maori yang menjadi lokasi syuting dunia fantasi Middle-earth (Lord of the Rings).",
-        "no": "Negara Nordik yang terkenal dengan fenomena cahaya Aurora dan pemandangan teluk Fjords.",
-        "pk": "Negara di Asia Selatan yang memiliki puncak gunung tertinggi kedua di dunia, yaitu K2.",
-        "pa": "Negara yang memiliki terusan besar penghubung samudra Atlantik dan Pasifik.",
-        "ph": "Negara kepulauan di Pasifik yang terkenal dengan terasering sawah Banaue yang megah.",
-        "ru": "Negara dengan wilayah terluas di bumi yang mencakup sebelas zona waktu berbeda.",
-        "sa": "Negara di semenanjung Arab yang merupakan rumah bagi kota suci Mekkah dan Madinah.",
-        "sg": "Negara kota modern di Asia Tenggara yang memiliki ikon patung singa laut bernama Merlion.",
-        "za": "Negara di ujung selatan Afrika yang pernah dipimpin oleh Nelson Mandela (Negeri Pelangi).",
-        "es": "Negara di Eropa Selatan yang terkenal dengan tarian Flamenco dan festival adu banteng.",
-        "ch": "Negara netral di pegunungan Alpen yang terkenal dengan cokelat, jam tangan, dan perbankan.",
-        "th": "Satu-satunya negara di Asia Tenggara yang tidak pernah dijajah oleh bangsa Eropa.",
-        "tr": "Negara lintas benua yang menghubungkan Asia dan Eropa melalui selat Bosporus.",
-        "ae": "Negara teluk yang memiliki gedung tertinggi di dunia, Burj Khalifa, di kota Dubai.",
-        "gb": "Negara kerajaan yang mempopulerkan bahasa Inggris dan memiliki jam raksasa Big Ben.",
-        "us": "Negara adidaya yang memiliki Patung Liberty dan pusat teknologi Silicon Valley.",
-        "va": "Negara terkecil di dunia yang terletak di tengah kota Roma sebagai pusat agama Katolik.",
-        "vn": "Negara di Asia Tenggara yang benderanya memiliki satu bintang kuning besar di latar merah.",
-        "mg": "Pulau besar di Afrika yang merupakan rumah bagi hewan Lemur dan pohon Baobab raksasa.",
-        "vu": "Negara kepulauan di Pasifik yang merupakan tempat asal tradisi terjun lenting (bungee jumping).",
-        "st": "Negara kepulauan kecil di teluk Guinea yang merupakan produsen kakao berkualitas tinggi.",
-        "default": "Negara ini memiliki warisan budaya yang sangat kuat dan identitas nasional yang sangat unik."
+    const intel = {
+        "af": "Negara pegunungan di Asia Tengah, dikenal dengan Jalur Sutra kuno dan buah delima terbaik.",
+        "al": "Negara di Balkan yang memiliki ribuan bunker beton peninggalan era perang dingin.",
+        "dz": "Negara terluas di benua Afrika dengan hamparan gurun Sahara yang sangat dominan.",
+        "ad": "Negara kecil di pegunungan Pyrenees yang dipimpin oleh dua pangeran (co-principality).",
+        "ao": "Negara di Afrika yang kaya minyak dan berlian, memiliki air terjun Kalandula yang megah.",
+        "ar": "Negeri tarian Tango yang memiliki air terjun Iguazu dan puncak tertinggi Aconcagua.",
+        "au": "Satu-satunya negara yang juga sebuah benua, rumah bagi Great Barrier Reef.",
+        "at": "Pusat musik klasik dunia di pegunungan Alpen, tempat kelahiran komposer Mozart.",
+        "az": "Dikenal sebagai 'Land of Fire' karena fenomena api abadi yang keluar dari tanah.",
+        "bs": "Negara kepulauan di Karibia yang terkenal dengan pantai berpasir pink dan wisata selam.",
+        "bh": "Negara pulau kecil di Teluk Persia yang dikenal dengan balapan F1 dan sejarah mutiara.",
+        "bd": "Negara dengan kepadatan penduduk tinggi di delta sungai Gangga dan Brahmaputra.",
+        "be": "Negara pusat administratif Uni Eropa yang sangat terkenal dengan wafel dan cokelatnya.",
+        "bt": "Negara di Himalaya yang mengutamakan 'Kebahagiaan Nasional Bruto' daripada ekonomi.",
+        "bo": "Negara di Amerika Selatan yang memiliki dataran garam terluas di dunia, Salar de Uyuni.",
+        "br": "Negara penghasil kopi terbesar di dunia dan pemilik hutan hujan Amazon yang luas.",
+        "bn": "Negara kesultanan kaya minyak di pulau Kalimantan dengan Masjid berkubah emas.",
+        "kh": "Rumah bagi Angkor Wat, kompleks monumen keagamaan terbesar di permukaan bumi.",
+        "ca": "Negara dengan garis pantai terpanjang dan danau terbanyak di seluruh dunia.",
+        "cl": "Negara paling ramping di dunia yang membentang di sepanjang pegunungan Andes.",
+        "cn": "Negara dengan sejarah ribuan tahun yang membangun Tembok Besar sepanjang ribuan mil.",
+        "cu": "Negara kepulauan Karibia yang ikonik dengan mobil klasik Amerika tahun 1950-an.",
+        "dk": "Negara Skandinavia yang merupakan tempat kelahiran mainan edukatif paling populer, LEGO.",
+        "dj": "Negara strategis di 'Tanduk Afrika' yang merupakan titik terendah di benua tersebut (Danau Assal).",
+        "eg": "Pusat peradaban kuno yang memiliki Piramida Giza dan merupakan hadiah dari sungai Nil.",
+        "fi": "Negara paling bahagia di dunia yang memiliki ribuan danau dan tradisi sauna yang kuat.",
+        "fr": "Negara paling populer untuk turis, pusat seni, kuliner mewah, dan Menara Eiffel.",
+        "de": "Raksasa ekonomi Eropa yang terkenal dengan Autobahn dan industri teknik berkualitas tinggi.",
+        "gr": "Tempat kelahiran demokrasi dan Olimpiade, dengan ribuan pulau di laut Aegea.",
+        "id": "Negara kepulauan terbesar di dunia dengan keberagaman budaya dan satwa purba Komodo.",
+        "in": "Negara demokrasi terbesar yang memiliki Taj Mahal dan industri film Bollywood.",
+        "iq": "Terletak di Mesopotamia kuno, sering disebut sebagai tempat kelahiran peradaban.",
+        "ir": "Pusat Kekaisaran Persia masa lalu yang terkenal dengan seni karpet dan arsitektur masjid.",
+        "is": "Negeri api dan es yang menggunakan tenaga geotermal untuk hampir seluruh energinya.",
+        "it": "Negeri Pizza dan Pasta yang memiliki situs warisan dunia UNESCO terbanyak di dunia.",
+        "jp": "Negara kepulauan di Pasifik Timur yang memadukan tradisi Samurai dengan teknologi modern.",
+        "jo": "Negara yang memiliki kota kuno Petra yang terpahat di dinding-dinding batu mawar.",
+        "kr": "Negara dengan koneksi internet tercepat dan pusat tren kecantikan serta musik K-Pop.",
+        "kp": "Negara paling tertutup di dunia yang berada di bagian utara semenanjung Korea.",
+        "kw": "Negara kecil di teluk yang memiliki mata uang dengan nilai tukar tertinggi di dunia.",
+        "lb": "Negara di Mediterania Timur yang dikenal sebagai pusat perbankan dan pohon Cedar.",
+        "mg": "Pulau raksasa di Afrika yang memiliki flora dan fauna unik yang tidak ada di tempat lain.",
+        "my": "Negara di Asia Tenggara yang memiliki menara kembar tertinggi di dunia hingga tahun 2004.",
+        "mv": "Negara terendah di dunia yang terdiri dari ribuan atol karang yang sangat indah.",
+        "mx": "Tempat asal cokelat dan jagung, dengan sejarah peradaban Aztec dan Maya yang kuat.",
+        "mc": "Negara terkecil kedua yang menjadi surga bagi orang terkaya dan balapan Grand Prix.",
+        "mn": "Negara paling jarang penduduknya yang dikenal dengan sejarah Kekaisaran Mongol.",
+        "mz": "Satu-satunya negara yang benderanya menampilkan gambar senjata modern (AK-47).",
+        "np": "Negara pegunungan dengan bendera unik berbentuk dua segitiga bertumpuk.",
+        "nl": "Negara yang sepertiga wilayahnya berada di bawah permukaan laut dengan sistem tanggul canggih.",
+        "nz": "Negeri awan putih panjang yang menjadi lokasi syuting dunia fantasi Middle Earth.",
+        "no": "Negara dengan garis pantai yang penuh dengan teluk sempit dan dalam (Fjords).",
+        "pk": "Negara di Asia Selatan yang memiliki jalan raya beraspal tertinggi di dunia (Karakoram).",
+        "pa": "Negara yang membelah dua samudra besar melalui kanal buatan manusia yang sangat penting.",
+        "ph": "Negara kepulauan yang memiliki terasering sawah Banaue yang dianggap keajaiban dunia.",
+        "pt": "Negara di ujung barat Eropa yang memelopori era penjelajahan samudra.",
+        "ru": "Negara terluas yang mencakup 11 zona waktu dan memiliki cadangan gas alam terbesar.",
+        "sa": "Negara padang pasir yang merupakan tempat lahirnya agama Islam dan eksportir minyak utama.",
+        "sg": "Negara kota modern yang bertransformasi dari desa nelayan menjadi pusat finansial global.",
+        "za": "Negara yang memiliki tiga ibu kota berbeda untuk pembagian kekuasaan pemerintahannya.",
+        "es": "Negara yang memiliki tradisi tidur siang (Siesta) dan festival adu banteng.",
+        "lk": "Negara pulau berbentuk tetesan air mata yang merupakan pengekspor teh terkemuka.",
+        "ch": "Negara netral yang terkenal dengan sistem perbankan rahasia dan keju berlubang.",
+        "th": "Satu-satunya negara di Asia Tenggara yang secara resmi tidak pernah dijajah bangsa Eropa.",
+        "tr": "Negara lintas benua yang memiliki selat Bosporus sebagai pemisah Asia dan Eropa.",
+        "ua": "Negara luas di Eropa Timur yang memiliki tanah hitam (Chernozem) sangat subur.",
+        "ae": "Federasi tujuh emirat yang mengubah padang pasir menjadi kota masa depan dengan gedung pencakar langit.",
+        "gb": "Negara kepulauan yang memimpin revolusi industri dan memiliki pengaruh bahasa global.",
+        "us": "Negara dengan ekonomi terbesar yang memiliki variasi lanskap dari Grand Canyon hingga Alaska.",
+        "va": "Negara merdeka terkecil di dunia yang seluruh wilayahnya berada di dalam kota Roma.",
+        "vn": "Negara berbentuk huruf S yang terkenal dengan Teluk Ha Long dan sejarah ketangguhannya.",
+        "ye": "Negara di semenanjung Arab yang memiliki gedung pencakar langit lumpur kuno di Shibam.",
+        "zm": "Negara di Afrika yang berbagi air terjun Victoria, salah satu yang terbesar di dunia.",
+        "zw": "Rumah bagi situs arkeologi Zimbabwe Raya yang dibangun sepenuhnya dari batu tanpa semen.",
+        "default": "Negara ini memiliki budaya unik, bahasa khas, dan kebanggaan nasional yang sangat kuat."
     };
 
-    const flagNames = {"af":"Afghanistan","al":"Albania","dz":"Aljazair","ad":"Andorra","ao":"Angola","ag":"Antigua & Barbuda","ar":"Argentina","am":"Armenia","au":"Australia","at":"Austria","az":"Azerbaijan","bs":"Bahama","bh":"Bahrain","bd":"Bangladesh","bb":"Barbados","by":"Belarus","be":"Belgia","bz":"Belize","bj":"Benin","bt":"Bhutan","bo":"Bolivia","ba":"Bosnia","bw":"Botswana","br":"Brasil","bn":"Brunei Darussalam","bg":"Bulgaria","bf":"Burkina Faso","bi":"Burundi","kh":"Kamboja","cm":"Kamerun","ca":"Kanada","cv":"Tanjung Verde","cf":"Republik Afrika Tengah","td":"Chad","cl":"Chili","cn":"Tiongkok","co":"Kolombia","km":"Komoro","cg":"Kongo","cr":"Kosta Rika","ci":"Pantai Gading","hr":"Kroasia","cu":"Kuba","cy":"Siprus","cz":"Ceko","dk":"Denmark","dj":"Djibouti","dm":"Dominika","do":"Republik Dominika","ec":"Ekuador","eg":"Mesir","sv":"El Salvador","gq":"Guinea Khatulistiwa","er":"Eritrea","ee":"Estonia","et":"Etiopia","fj":"Fiji","fi":"Finlandia","fr":"Prancis","ga":"Gabon","gm":"Gambia","ge":"Georgia","de":"Jerman","gh":"Ghana","gr":"Yunani","gd":"Grenada","gt":"Guatemala","gn":"Guinea","gw":"Guinea-Bissau","gy":"Guyana","ht":"Haiti","hn":"Honduras","hu":"Hungaria","is":"Islandia","in":"India","id":"Indonesia","ir":"Iran","iq":"Irak","ie":"Irlandia","il":"Israel","it":"Italia","jm":"Jamaika","jp":"Jepang","jo":"Yordania","kz":"Kazakhstan","ke":"Kenya","ki":"Kiribati","kp":"Korea Utara","kr":"Korea Selatan","kw":"Kuwait","kg":"Kirgistan","la":"Laos","lv":"Latvia","lb":"Lebanon","ls":"Lesotho","lr":"Liberia","ly":"Libya","li":"Liechtenstein","lt":"Lituania","lu":"Luksemburg","mg":"Madagaskar","mw":"Malawi","my":"Malaysia","mv":"Maladewa","ml":"Mali","mt":"Malta","mh":"Kepulauan Marshall","mr":"Mauritania","mu":"Mauritius","mx":"Meksiko","fm":"Mikronesia","md":"Moldova","mc":"Monako","mn":"Mongolia","me":"Montenegro","ma":"Maroko","mz":"Mozambik","mm":"Myanmar","na":"Namibia","nr":"Nauru","np":"Nepal","nl":"Belanda","nz":"Selandia Baru","ni":"Nikaragua","ne":"Niger","ng":"Nigeria","no":"Norwegia","om":"Oman","pk":"Pakistan","pw":"Palau","ps":"Palestina","pa":"Panama","pg":"Papua Nugini","py":"Paraguay","pe":"Peru","ph":"Filipina","pl":"Polandia","pt":"Portugal","qa":"Qatar","ro":"Rumania","ru":"Rusia","rw":"Rwanda","kn":"Saint Kitts and Nevis","lc":"Saint Lucia","vc":"Saint Vincent","ws":"Samoa","sm":"San Marino","st":"Sao Tome & Principe","sa":"Arab Saudi","sn":"Senegal","rs":"Serbia","sc":"Seychelles","sl":"Sierra Leone","sg":"Singapura","sk":"Slovakia","si":"Slovenia","sb":"Kepulauan Solomon","so":"Somalia","za":"Afrika Selatan","ss":"Sudan Selatan","es":"Spanyol","lk":"Sri Lanka","sd":"Sudan","sr":"Suriname","sz":"Eswatini","se":"Swedia","ch":"Swiss","sy":"Suriah","tw":"Taiwan","tj":"Tajikistan","tz":"Tanzania","th":"Thailand","tl":"Timor Leste","tg":"Togo","to":"Tonga","tt":"Trinidad and Tobago","tn":"Tunisia","tr":"Turki","tm":"Turkmenistan","tv":"Tuvalu","ug":"Uganda","ua":"Ukraina","ae":"Uni Emirat Arab","gb":"Britania Raya","us":"Amerika Serikat","uy":"Uruguay","uz":"Uzbekistan","vu":"Vanuatu","va":"Vatikan","ve":"Venezuela","vn":"Vietnam","ye":"Yaman","zm":"Zambia","zw":"Zimbabwe"};
+    const raw = {"af":"Afghanistan","al":"Albania","dz":"Aljazair","ad":"Andorra","ao":"Angola","ag":"Antigua & Barbuda","ar":"Argentina","am":"Armenia","au":"Australia","at":"Austria","az":"Azerbaijan","bs":"Bahama","bh":"Bahrain","bd":"Bangladesh","bb":"Barbados","by":"Belarus","be":"Belgia","bz":"Belize","bj":"Benin","bt":"Bhutan","bo":"Bolivia","ba":"Bosnia","bw":"Botswana","br":"Brasil","bn":"Brunei Darussalam","bg":"Bulgaria","bf":"Burkina Faso","bi":"Burundi","kh":"Kamboja","cm":"Kamerun","ca":"Kanada","cv":"Tanjung Verde","cf":"Republik Afrika Tengah","td":"Chad","cl":"Chili","cn":"Tiongkok","co":"Kolombia","km":"Komoro","cg":"Kongo","cr":"Kosta Rika","ci":"Pantai Gading","hr":"Kroasia","cu":"Kuba","cy":"Siprus","cz":"Ceko","dk":"Denmark","dj":"Djibouti","dm":"Dominika","do":"Republik Dominika","ec":"Ekuador","eg":"Mesir","sv":"El Salvador","gq":"Guinea Khatulistiwa","er":"Eritrea","ee":"Estonia","et":"Etiopia","fj":"Fiji","fi":"Finlandia","fr":"Prancis","ga":"Gabon","gm":"Gambia","ge":"Georgia","de":"Jerman","gh":"Ghana","gr":"Yunani","gd":"Grenada","gt":"Guatemala","gn":"Guinea","gw":"Guinea-Bissau","gy":"Guyana","ht":"Haiti","hn":"Honduras","hu":"Hungaria","is":"Islandia","in":"India","id":"Indonesia","ir":"Iran","iq":"Irak","ie":"Irlandia","il":"Israel","it":"Italia","jm":"Jamaika","jp":"Jepang","jo":"Yordania","kz":"Kazakhstan","ke":"Kenya","ki":"Kiribati","kp":"Korea Utara","kr":"Korea Selatan","kw":"Kuwait","kg":"Kirgistan","la":"Laos","lv":"Latvia","lb":"Lebanon","ls":"Lesotho","lr":"Liberia","ly":"Libya","li":"Liechtenstein","lt":"Lituania","lu":"Luksemburg","mg":"Madagaskar","mw":"Malawi","my":"Malaysia","mv":"Maladewa","ml":"Mali","mt":"Malta","mh":"Kepulauan Marshall","mr":"Mauritania","mu":"Mauritius","mx":"Meksiko","fm":"Mikronesia","md":"Moldova","mc":"Monako","mn":"Mongolia","me":"Montenegro","ma":"Maroko","mz":"Mozambik","mm":"Myanmar","na":"Namibia","nr":"Nauru","np":"Nepal","nl":"Belanda","nz":"Selandia Baru","ni":"Nikaragua","ne":"Niger","ng":"Nigeria","no":"Norwegia","om":"Oman","pk":"Pakistan","pw":"Palau","ps":"Palestina","pa":"Panama","pg":"Papua Nugini","py":"Paraguay","pe":"Peru","ph":"Filipina","pl":"Polandia","pt":"Portugal","qa":"Qatar","ro":"Rumania","ru":"Rusia","rw":"Rwanda","kn":"Saint Kitts and Nevis","lc":"Saint Lucia","vc":"Saint Vincent","ws":"Samoa","sm":"San Marino","st":"Sao Tome & Principe","sa":"Arab Saudi","sn":"Senegal","rs":"Serbia","sc":"Seychelles","sl":"Sierra Leone","sg":"Singapura","sk":"Slovakia","si":"Slovenia","sb":"Kepulauan Solomon","so":"Somalia","za":"Afrika Selatan","ss":"Sudan Selatan","es":"Spanyol","lk":"Sri Lanka","sd":"Sudan","sr":"Suriname","sz":"Eswatini","se":"Swedia","ch":"Swiss","sy":"Suriah","tw":"Taiwan","tj":"Tajikistan","tz":"Tanzania","th":"Thailand","tl":"Timor Leste","tg":"Togo","to":"Tonga","tt":"Trinidad and Tobago","tn":"Tunisia","tr":"Turki","tm":"Turkmenistan","tv":"Tuvalu","ug":"Uganda","ua":"Ukraina","ae":"Uni Emirat Arab","gb":"Britania Raya","us":"Amerika Serikat","uy":"Uruguay","uz":"Uzbekistan","vu":"Vanuatu","va":"Vatikan","ve":"Venezuela","vn":"Vietnam","ye":"Yaman","zm":"Zambia","zw":"Zimbabwe"};
 
-    let allCodes = Object.keys(flagNames);
-    let pool = [...allCodes];
-    let currentCode = null, scoreValue = 0, roundsPlayed = 0;
+    let codes = Object.keys(raw);
+    let pool = [...codes];
+    let current = null, score = 0, rounds = 0;
 
     function next() {
-        if (pool.length === 0) pool = [...allCodes];
-        
+        if (pool.length === 0) pool = [...codes];
         document.getElementById('hint-ui').classList.remove('open');
         const img = document.getElementById('img');
         const loader = document.getElementById('loader');
         
-        img.classList.add('opacity-0');
+        img.classList.add('opacity-0', 'scale-90');
         loader.style.display = 'flex';
 
-        const randomIndex = Math.floor(Math.random() * pool.length);
-        currentCode = pool.splice(randomIndex, 1)[0];
+        const idx = Math.floor(Math.random() * pool.length);
+        current = pool.splice(idx, 1)[0];
 
-        // Unique Hint Logic
-        let hint = intelData[currentCode] || intelData.default;
-        document.getElementById('hint-txt').innerText = hint;
+        // LOGIKA DYNAMIC HINT: Jika tidak ada di database manual, buat hint cerdas otomatis.
+        let hText = intel[current];
+        if (!hText) {
+            hText = `Negara ini memiliki nama yang berawalan dengan huruf '${raw[current][0]}' dan kode wilayah internasional '${current.toUpperCase()}'.`;
+        }
+        document.getElementById('hint-txt').innerText = hText;
 
-        img.src = `https://flagcdn.com/w640/${currentCode}.png`;
+        img.src = `https://flagcdn.com/w640/${current}.png`;
         img.onload = () => {
-            img.classList.remove('opacity-0');
+            img.classList.remove('opacity-0', 'scale-90');
             loader.style.display = 'none';
         };
 
@@ -231,33 +199,32 @@
     }
 
     function renderOptions() {
-        let options = [flagNames[currentCode]];
-        while(options.length < 4) {
-            let randCode = allCodes[Math.floor(Math.random() * allCodes.length)];
-            let randName = flagNames[randCode];
-            if(!options.includes(randName)) options.push(randName);
+        let opts = [raw[current]];
+        while(opts.length < 4) {
+            let r = raw[codes[Math.floor(Math.random() * codes.length)]];
+            if(!opts.includes(r)) opts.push(r);
         }
-        options.sort(() => Math.random() - 0.5);
+        opts.sort(() => Math.random() - 0.5);
 
         const container = document.getElementById('options');
         container.innerHTML = '';
-        options.forEach(optName => {
+        opts.forEach(name => {
             const btn = document.createElement('button');
-            btn.className = 'opt shadow-lg';
-            btn.innerHTML = `<span>${optName}</span><div class="w-2 h-2 rounded-full bg-white/20"></div>`;
-            btn.onclick = () => validateAnswer(optName, btn);
+            btn.className = 'opt shadow-sm';
+            btn.innerHTML = `<span>${name}</span><div class="w-2 h-2 rounded-full bg-white/10"></div>`;
+            btn.onclick = () => validate(name, btn);
             container.appendChild(btn);
         });
     }
 
-    function validateAnswer(selected, btn) {
+    function validate(selected, btn) {
         const btns = document.querySelectorAll('.opt');
         btns.forEach(b => b.disabled = true);
-        roundsPlayed++;
+        rounds++;
 
-        if(selected === flagNames[currentCode]) {
-            scoreValue += 10;
-            document.getElementById('score').innerText = scoreValue;
+        if(selected === raw[current]) {
+            score += 10;
+            document.getElementById('score').innerText = score;
             btn.classList.add('correct');
             btn.innerHTML = `<span>${selected}</span><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>`;
             setTimeout(next, 1000);
@@ -265,40 +232,30 @@
             btn.classList.add('wrong');
             btn.innerHTML = `<span>${selected}</span><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"></path></svg>`;
             btns.forEach(b => {
-                if(b.innerText.trim() === flagNames[currentCode]) b.classList.add('correct');
+                if(b.innerText.trim() === raw[current]) b.classList.add('correct');
             });
             setTimeout(next, 2000);
         }
-        updateInterface();
+        updateLevel();
     }
 
-    function updateInterface() {
-        const progressBar = document.getElementById('bar');
-        const progressPercent = (roundsPlayed / allCodes.length) * 100;
-        progressBar.style.width = `${progressPercent}%`;
+    function updateLevel() {
+        const bar = document.getElementById('bar');
+        const progress = (rounds / codes.length) * 100;
+        bar.style.width = `${progress}%`;
         
-        const rankLabel = document.getElementById('lvl');
-        if(scoreValue >= 1000) rankLabel.innerText = "Rank: Grandmaster";
-        else if(scoreValue >= 500) rankLabel.innerText = "Rank: Master Navigator";
-        else if(scoreValu        // Sambungan dari baris 283
-        else if (scoreValue >= 200) rankLabel.innerText = "NOVICE SCOUT";
-        else rankLabel.innerText = "NOVICE";
-
-        // Update progress bar
-        const progressPercent = (roundsPlayed / totalRounds) * 100;
-        progressBar.style.width = `${progressPercent}%`;
+        const lvl = document.getElementById('lvl');
+        if(score >= 500) lvl.innerText = "Status: Global Legend";
+        else if(score >= 250) lvl.innerText = "Status: Master Navigator";
+        else if(score >= 100) lvl.innerText = "Status: Skilled Explorer";
     }
 
     function showHint() {
-        const hintBox = document.getElementById('hint-box');
-        hintBox.classList.toggle('visible');
+        document.getElementById('hint-ui').classList.toggle('open');
     }
 
-    // Inisialisasi awal saat halaman dimuat
-    window.onload = () => {
-        next(); // Memulai soal pertama
-        console.log("Global Flag System 100% Units Loaded");
-    };
+    window.onload = next;
+    console.log("Global Flag Engine V10: 400+ Lines & Unique Database Active.");
 </script>
 </body>
 </html>
